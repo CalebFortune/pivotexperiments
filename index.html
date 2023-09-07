@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Calendar Generator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Content Calendar Generator</h1>
+        <form id="contentForm">
+            <!-- User Details -->
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="company">Company:</label>
+            <input type="text" id="company" name="company" required>
+
+            <label for="industry">Industry:</label>
+            <input type="text" id="industry" name="industry" required>
+
+            <!-- Content Preferences -->
+            <label for="timeFrame">Time Frame:</label>
+            <select id="timeFrame" name="timeFrame">
+                <option value="month">Month</option>
+                <option value="quarter">Quarter</option>
+                <option value="6 months">6 Months</option>
+                <option value="1 year">1 Year</option>
+            </select>
+
+            <label for="frequency">Frequency:</label>
+            <input type="number" id="frequency" name="frequency" required>
+
+            <label for="frequencyType">Frequency Type:</label>
+            <select id="frequencyType" name="frequencyType">
+                <option value="week">Per Week</option>
+                <option value="month">Per Month</option>
+            </select>
+
+            <label for="projectTypes">Project Types (comma-separated, in order of importance):</label>
+            <input type="text" id="projectTypes" name="projectTypes" placeholder="e.g. Blog, Video, Podcast" required>
+
+            <label for="personas">Personas (comma-separated, in order of importance):</label>
+            <input type="text" id="personas" name="personas" placeholder="e.g. Marketer, Influencer, Manager" required>
+
+            <label for="ideas">Ideas (Direct Titles or Topic Clusters):</label>
+            <textarea id="ideas" name="ideas" rows="4" placeholder="e.g. How to use AI in marketing"></textarea>
+
+            <button type="submit">Generate Calendar</button>
+        </form>
+        <div id="calendarOutput">
+            <!-- Display generated calendar here -->
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
