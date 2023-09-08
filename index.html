@@ -3,58 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Content Calendar Generator</title>
+    <title>AI Content Calendar</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- Include the Parse JavaScript SDK -->
     <script src="https://unpkg.com/parse/dist/parse.min.js"></script>
+    <script src="script.js" defer></script>
 </head>
 <body>
-    <div class="container">
-        <h1>Content Calendar Generator</h1>
-        <form id="contentForm">
-            <!-- User Details -->
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required>
 
-            <label for="company">Company:</label>
-            <input type="text" id="company" name="company" required>
+<!-- User Details Page -->
+<div id="userDetailsPage" class="page">
+    <h2>User Details</h2>
+    <label for="fullName">Full Name:</label>
+    <input type="text" id="fullName">
+    
+    <label for="company">Company:</label>
+    <input type="text" id="company">
+    
+    <label for="industry">Industry:</label>
+    <select id="industry">
+        <!-- Options will be populated dynamically -->
+    </select>
+    
+    <button onclick="navigateTo(1)">Next</button>
+</div>
 
-            <label for="industry">Industry:</label>
-            <input type="text" id="industry" name="industry" required>
+<!-- Time and Frequency Page -->
+<div id="timeFrequencyPage" class="page" style="display: none;">
+    <h2>Time and Frequency</h2>
+    <label for="timeFrame">Time Frame:</label>
+    <select id="timeFrame">
+        <option value="month">Month</option>
+        <option value="quarter">Quarter</option>
+        <option value="6months">6 Months</option>
+        <option value="year">1 Year</option>
+    </select>
+    
+    <label for="frequency">Frequency:</label>
+    <input type="number" id="frequency">
+    
+    <label for="frequencyType">Frequency Type:</label>
+    <select id="frequencyType">
+        <option value="week">Per Week</option>
+        <option value="month">Per Month</option>
+    </select>
+    
+    <button onclick="navigateTo(0)">Back</button>
+    <button onclick="navigateTo(2)">Next</button>
+</div>
 
-            <!-- Content Preferences -->
-            <label for="timeFrame">Time Frame:</label>
-            <select id="timeFrame" name="timeFrame">
-                <option value="month">Month</option>
-                <option value="quarter">Quarter</option>
-                <option value="6 months">6 Months</option>
-                <option value="1 year">1 Year</option>
-            </select>
+<!-- Key Factors Page -->
+<div id="keyFactorsPage" class="page" style="display: none;">
+    <h2>Key Factors</h2>
+    <h3>Project Types (In order of importance)</h3>
+    <input type="text" placeholder="1st Priority">
+    <input type="text" placeholder="2nd Priority">
+    <input type="text" placeholder="3rd Priority">
+    
+    <h3>Personas (In order of importance)</h3>
+    <input type="text" placeholder="1st Priority">
+    <input type="text" placeholder="2nd Priority">
+    <input type="text" placeholder="3rd Priority">
+    
+    <button onclick="navigateTo(1)">Back</button>
+    <button onclick="navigateTo(3)">Next</button>
+</div>
 
-            <label for="frequency">Frequency:</label>
-            <input type="number" id="frequency" name="frequency" required>
-
-            <label for="frequencyType">Frequency Type:</label>
-            <select id="frequencyType" name="frequencyType">
-                <option value="week">Per Week</option>
-                <option value="month">Per Month</option>
-            </select>
-
-            <label for="projectTypes">Project Types (comma-separated, in order of importance):</label>
-            <input type="text" id="projectTypes" name="projectTypes" placeholder="e.g. Blog, Video, Podcast" required>
-
-            <label for="personas">Personas (comma-separated, in order of importance):</label>
-            <input type="text" id="personas" name="personas" placeholder="e.g. Marketer, Influencer, Manager" required>
-
-            <label for="ideas">Ideas (Direct Titles or Topic Clusters):</label>
-            <textarea id="ideas" name="ideas" rows="4" placeholder="e.g. How to use AI in marketing"></textarea>
-
-            <button type="submit">Generate Calendar</button>
-        </form>
-        <div id="calendarOutput">
-            <!-- Display generated calendar here -->
-        </div>
+<!-- Idea Input Page -->
+<div id="ideaInputPage" class="page" style="display: none;">
+    <h2>Idea Input</h2>
+    <label for="ideaType">Idea Type:</label>
+    <select id="ideaType" onchange="toggleIdeaTypeFields()">
+        <option value="directTitle">Direct Title</option>
+        <option value="topicCluster">Topic Cluster</option>
+    </select>
+    
+    <!-- Direct Title Fields -->
+    <div id="directTitleFields">
+        <label for="title">Title:</label>
+        <input type="text" id="title">
+        
+        <label for="projectType">Project Type:</label>
+        <select id="projectType">
+            <!-- Options will be populated dynamically -->
+        </select>
+        
+        <label for="persona">Persona:</label>
+        <select id="persona">
+            <!-- Options will be populated dynamically -->
+        </select>
     </div>
-    <script src="script.js"></script>
+    
+    <!-- Topic Cluster Field -->
+    <div id="topicClusterField" style="display: none;">
+        <label for="topic">Topic:</label>
+        <input type="text" id="topic">
+    </div>
+    
+    <button onclick="navigateTo(2)">Back</button>
+    <button onclick="saveIdea()">Save and Add More</button>
+    <button onclick="navigateTo(4)">Next</button>
+</div>
+
+<!-- Summary Page -->
+<div id="summaryPage" class="page" style="display: none;">
+    <h2>Summary</h2>
+    
+    <h3>Your Details</h3>
+    <p><strong>Full Name:</strong> <span id="summaryName"></span></p>
+    <p><strong>Company:</strong> <span id="summaryCompany"></span></p>
+    <p><strong>Industry:</strong> <span id="summaryIndustry"></span></p>
+
+    <h3>Time and Frequency</h3>
+    <p><strong>Time Frame:</strong> <span id="summaryTimeFrame"></span></p>
+    <p><strong>Frequency:</strong> <span id="summaryFrequency"></span> <span id="summaryFrequencyType"></span></p>
+
+    <h3>Key Factors</h3>
+    <p><strong>Project Types:</strong> <span id="summaryProjectTypes"></span></p>
+    <p><strong>Personas:</strong> <span id="summaryPersonas"></span></p>
+
+    <h3>Ideas</h3>
+    <p><strong>Ideas Submitted:</strong> <span id="summaryTotalIdeas"></span> out of <span id="requiredIdeasCount"></span></p>
+
+    <button onclick="navigateTo(3)">Back</button>
+    <button onclick="submitData()">Submit</button>
+</div>
+
 </body>
 </html>
