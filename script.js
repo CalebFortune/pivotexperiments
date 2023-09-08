@@ -22,6 +22,10 @@ function navigateToPage(pageId) {
         page.style.display = 'none';
     });
     document.getElementById(pageId).style.display = 'block';
+if (pageId === 'ideaInputPage') {
+        populateProjectTypes();
+        populatePersonas();
+    }
 }
 
 // 3. Dynamic Field Population
