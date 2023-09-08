@@ -259,15 +259,6 @@ function saveIdea() {
 function submitProgress() {
     document.getElementById('spinner').style.display = 'block';
 }
-    userInput.save().then((response) => {
-        console.log('Data saved successfully:', response);
-        alert('Data submitted successfully!');
-        document.getElementById('spinner').style.display = 'none'; // Hide spinner
-    }).catch((error) => {
-        console.error('Error while saving data:', error);
-        alert('There was an error submitting your data. Please try again.');
-        document.getElementById('spinner').style.display = 'none'; // Hide spinner
-    });
 
 
 // Call initialization functions or any other setup tasks here
