@@ -54,16 +54,20 @@ async function populateIndustries() {
     });
 }
 
-async function populateProjectTypes() {
-    if (!projectTypeData.length) { // Only fetch if not already fetched
-        const ProjectType = Parse.Object.extend("ProjectType");
-        const query = new Parse.Query(ProjectType);
-        try {
-            projectTypeData = await query.find();
-        } catch (error) {
-            console.error('Error fetching project types:', error);
+function populateProjectTypes() {
+    const ideaProjectTypeDropdown = document.getElementById('ideaProjectType');
+    // Clear any existing options
+    ideaProjectTypeDropdown.innerHTML = '';
+    
+    userData.projectTypes.forEach(projectType => {
+        if (projectType) { // Check if the projectType is not an empty string
+            const option = document.createElement('option');
+            option.value = projectType;
+            option.textContent = projectType;
+            ideaProjectTypeDropdown.appendChild(option);
         }
-    }
+    });
+}
 
     const ideaProjectTypeDropdown = document.getElementById('ideaProjectType');
     projectTypeData.forEach(projectType => {
@@ -74,16 +78,20 @@ async function populateProjectTypes() {
     });
 }
 
-async function populatePersonas() {
-    if (!personaData.length) { // Only fetch if not already fetched
-        const Persona = Parse.Object.extend("Persona");
-        const query = new Parse.Query(Persona);
-        try {
-            personaData = await query.find();
-        } catch (error) {
-            console.error('Error fetching personas:', error);
+function populatePersonas() {
+    const ideaPersonaDropdown = document.getElementById('ideaPersona');
+    // Clear any existing options
+    ideaPersonaDropdown.innerHTML = '';
+    
+    userData.personas.forEach(persona => {
+        if (persona) { // Check if the persona is not an empty string
+            const option = document.createElement('option');
+            option.value = persona;
+            option.textContent = persona;
+            ideaPersonaDropdown.appendChild(option);
         }
-    }
+    });
+}
 
     const ideaPersonaDropdown = document.getElementById('ideaPersona');
     personaData.forEach(persona => {
