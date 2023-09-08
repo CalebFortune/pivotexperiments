@@ -161,7 +161,11 @@ function submitData() {
     
     userInput.save().then((response) => {
         console.log('Data saved successfully:', response);
-        alert('Data submitted successfully!');
+        document.getElementById('submissionMessage').style.display = 'block';
+      
+        // Generate content ideas based on user input
+        generateContentIdeas();
+
         document.getElementById('spinner').style.display = 'none'; // Hide spinner
     }).catch((error) => {
         console.error('Error while saving data:', error);
@@ -258,6 +262,43 @@ function saveIdea() {
 }
 function submitProgress() {
     document.getElementById('spinner').style.display = 'block';
+}
+function generateContentIdeas() {
+    // Add Direct Titles to our list of content ideas
+    const contentIdeas = [...userData.ideas];
+
+    // If Topic Clusters are provided, use them to generate content ideas
+    if (userData.topicClusters && userData.topicClusters.length) {
+        userData.topicClusters.forEach(cluster => {
+            // Use predefined templates or integrate with ChatGPT to generate ideas
+            // For simplicity, we'll use a basic template here
+            const idea = `A deep dive into ${cluster}`;
+            contentIdeas.push(idea);
+        });
+    }
+
+    // If no Topic Clusters but there are Direct Titles, use them to generate complementary content ideas
+    // ... (similar logic as above)
+
+    // Organize the content ideas
+    organizeContentIdeas(contentIdeas);
+}
+function organizeContentIdeas(ideas) {
+    // Organize ideas based on SEO, Project Type, Persona
+    // ...
+
+    // Assign specific weekdays to each idea based on the user's frequency input
+    // ...
+
+    // Display the organized ideas to the user in the Task View
+    displayIdeasInTaskView(ideas);
+}
+function displayIdeasInTaskView(ideas) {
+    // Update the frontend to display the ideas in the described format
+    // ...
+
+    // Provide an option for users to toggle to the Calendar View
+    // ...
 }
 
 
