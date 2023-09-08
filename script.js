@@ -232,8 +232,7 @@ function saveIdea() {
 
 // Call initialization functions or any other setup tasks here
 populateIndustries();
-populateProjectTypes();
-populatePersonas();
+
 
 // Attach event listeners
 document.getElementById('contentForm').addEventListener('submit', async function(event) {
