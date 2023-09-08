@@ -99,7 +99,61 @@ function toggleIdeaTypeFields() {
 }
 
 // Call initialization functions or any other setup tasks here
-
+// 3. Dynamic Field Population
+async function populateIndustries() {
+    const IndustryKeywords = Parse.Object.extend("IndustryKeywords");
+    const query = new Parse.Query(IndustryKeywords);
+    try {
+        const industryKeywords = await query.find();
+        const industryDropdown = document.getElementById('industry');
+        industryKeywords.forEach(industryKeyword => {
+            const option = document.createElement('option');
+            option.value = industryKeyword.get('industry');
+            option.textContent = industryKeyword.get('industry');
+            industryDropdown.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Error fetching industries:', error);
+    }
+}
+// Populate ProjectTypes
+async function populateProjectTypes() {
+    const ProjectType = Parse.Object.extend("ProjectType");
+    const query = new Parse.Query(ProjectType);
+    try {
+        const projectTypes = await query.find();
+        const projectTypeDropdown = document.getElementById('projectType');
+        projectTypes.forEach(projectType => {
+            const option = document.createElement('option');
+            option.value = projectType.get('name');
+            option.textContent = projectType.get('name');
+            projectTypeDropdown.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Error fetching project types:', error);
+    }
+}
+// Populate Personas
+async function populatePersonas() {
+    const Persona = Parse.Object.extend("Persona");
+    const query = new Parse.Query(Persona);
+    try {
+        const personas = await query.find();
+        const personaDropdown = document.getElementById('persona');
+        personas.forEach(persona => {
+            const option = document.createElement('option');
+            option.value = persona.get('name');
+            option.textContent = persona.get('name');
+            personaDropdown.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Error fetching personas:', error);
+    }
+}
+// Call initialization functions or any other setup tasks here
+populateIndustries();
+populateProjectTypes();
+populatePersonas();
 
 // Attach event listeners
 document.getElementById('contentForm').addEventListener('submit', async function(event) {
