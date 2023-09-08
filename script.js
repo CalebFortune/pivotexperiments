@@ -16,8 +16,6 @@ const userData = {
 
 // Global variables to store fetched data
 let industryData = [];
-let projectTypeData = [];
-let personaData = [];
 
 // 2. Navigation Functions
 function navigateToPage(pageId, event) {
@@ -53,35 +51,36 @@ async function populateIndustries() {
         industryDropdown.appendChild(option);
     });
 }
-
 function populateProjectTypes() {
     const ideaProjectTypeDropdown = document.getElementById('ideaProjectType');
+    // Clear any existing options
+    ideaProjectTypeDropdown.innerHTML = '';
+    
     userData.projectTypes.forEach(projectType => {
-        const option = document.createElement('option');
-        option.value = projectType;
-        option.textContent = projectType;
-        ideaProjectTypeDropdown.appendChild(option);
+        if (projectType) { // Check if the projectType is not an empty string
+            const option = document.createElement('option');
+            option.value = projectType;
+            option.textContent = projectType;
+            ideaProjectTypeDropdown.appendChild(option);
+        }
     });
 }
 
 function populatePersonas() {
     const ideaPersonaDropdown = document.getElementById('ideaPersona');
+    // Clear any existing options
+    ideaPersonaDropdown.innerHTML = '';
+    
     userData.personas.forEach(persona => {
-        const option = document.createElement('option');
-        option.value = persona;
-        option.textContent = persona;
-        ideaPersonaDropdown.appendChild(option);
+        if (persona) { // Check if the persona is not an empty string
+            const option = document.createElement('option');
+            option.value = persona;
+            option.textContent = persona;
+            ideaPersonaDropdown.appendChild(option);
+        }
     });
 }
 
-    const ideaPersonaDropdown = document.getElementById('ideaPersona');
-    personaData.forEach(persona => {
-        const option = document.createElement('option');
-        option.value = persona.get('name');
-        option.textContent = persona.get('name');
-        ideaPersonaDropdown.appendChild(option.cloneNode(true)); // Use cloneNode to ensure a fresh copy for each dropdown
-    });
-}
 
 // 4. Data Collection and Validation
 function collectUserData() {
