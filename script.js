@@ -88,18 +88,53 @@ function collectUserData() {
     userData.projectTypes = Array.from(document.querySelectorAll('.projectType')).map(el => el.value);
     userData.personas = Array.from(document.querySelectorAll('.persona')).map(el => el.value);
 }
+
 function validateUserData() {
-    for (let key in userData) {
-        if (!userData[key] || (Array.isArray(userData[key]) && !userData[key].length)) {
-            alert(`Please fill the ${key} field.`);
-            return false;
-        }
+    const currentPage = document.querySelector('.page[style*="block"]');
+    if (!currentPage) return true; // If no page is detected, default to true.
+
+    const pageId = currentPage.id;
+
+    switch (pageId) {
+        case 'userDetailsPage':
+            // Validate fields specific to the User Details page
+            if (!userData.fullName || !userData.company || !userData.industry) {
+                alert('Please fill in all fields on this page.');
+                return false;
+            }
+            break;
+
+        case 'timeFrequencyPage':
+            // Validate fields specific to the Time and Frequency page
+            if (!userData.timeFrame || !userData.frequency || !userData.frequencyType) {
+                alert('Please fill in all fields on this page.');
+                return false;
+            }
+            break;
+
+        case 'keyFactorsPage':
+            // Validate fields specific to the Key Factors page
+            if (userData.projectTypes.some(pt => !pt) || userData.personas.some(p => !p)) {
+                alert('Please fill in all fields on this page.');
+                return false;
+            }
+            break;
+
+        case 'ideaInputPage':
+            // Validate fields specific to the Idea Input page
+            // If you have specific fields to validate here, add them.
+            break;
+
+        default:
+            break;
     }
+
     return true;
 }
 
 // 5. Data Submission
 function submitData() {
+    collectUserData(); // Collect user data before validating
     if (!validateUserData()) return;
 
     const UserInput = Parse.Object.extend("UserInput");
