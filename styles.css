@@ -71,3 +71,22 @@ button:hover {
 #calendarOutput {
     margin-top: 30px;
 }
+
+.page {
+    display: none; /* By default, pages are hidden */
+}
+
+/* Styling for Direct Title and Topic Cluster sections */
+#directTitleFields, 
+#topicClusterField {
+    display: none; /* Initially hidden */
+}
+
+/* Styling for displaying idea count */
+.idea-count-display {
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #e74c3c; /* Red color for emphasis, but this can be changed */
+}
+
+
