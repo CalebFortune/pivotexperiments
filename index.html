@@ -23,7 +23,7 @@
         <!-- Options will be populated dynamically -->
     </select>
     
-    <button onclick="navigateTo(1)">Next</button>
+    <button onclick="navigateToPage('timeFrequencyPage')">Next</button>
 </div>
 
 <!-- Time and Frequency Page -->
@@ -46,8 +46,8 @@
         <option value="month">Per Month</option>
     </select>
     
-    <button onclick="navigateTo(0)">Back</button>
-    <button onclick="navigateTo(2)">Next</button>
+    <button onclick="navigateToPage('userDetailsPage')">Back</button>
+    <button onclick="navigateToPage('keyFactorsPage')">Next</button>
 </div>
 
 <!-- Key Factors Page -->
@@ -63,8 +63,8 @@
     <input type="text" placeholder="2nd Priority">
     <input type="text" placeholder="3rd Priority">
     
-    <button onclick="navigateTo(1)">Back</button>
-    <button onclick="navigateTo(3)">Next</button>
+    <button onclick="navigateToPage('timeFrequencyPage')">Back</button>
+    <button onclick="navigateToPage('ideaInputPage')">Next</button>
 </div>
 
 <!-- Idea Input Page -->
@@ -98,9 +98,9 @@
         <input type="text" id="topic">
     </div>
     
-    <button onclick="navigateTo(2)">Back</button>
+    <button onclick="navigateToPage('keyFactorsPage')">Back</button>
     <button onclick="saveIdea()">Save and Add More</button>
-    <button onclick="navigateTo(4)">Next</button>
+    <button onclick="navigateToPage('summaryPage')">Next</button>
 </div>
 
 <!-- Summary Page -->
@@ -123,9 +123,10 @@
     <h3>Ideas</h3>
     <p><strong>Ideas Submitted:</strong> <span id="summaryTotalIdeas"></span> out of <span id="requiredIdeasCount"></span></p>
 
-    <button onclick="navigateTo(3)">Back</button>
-    <button onclick="submitData()">Submit</button>
+    <button onclick="navigateToPage('ideaInputPage')">Back</button>
+    <button id="finalSubmitButton">Submit</button>
 </div>
-    <script src="script.js" defer></script>
+
+<script src="script.js" defer></script>
 </body>
 </html>
