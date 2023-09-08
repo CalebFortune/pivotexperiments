@@ -99,7 +99,7 @@ function toggleIdeaTypeFields() {
 }
 
 // Call initialization functions or any other setup tasks here
-populateIndustries();
+
 
 // Attach event listeners
 document.getElementById('contentForm').addEventListener('submit', async function(event) {
