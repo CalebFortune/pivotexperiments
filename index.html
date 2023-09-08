@@ -74,22 +74,24 @@
     <h2>Idea Input</h2>
     <label for="ideaType">Idea Type:</label>
     <select id="ideaType" onchange="toggleIdeaTypeFields()">
-        <option value="directTitle">Direct Title</option>
-        <option value="topicCluster">Topic Cluster</option>
+    <option value="" disabled selected>Select Idea Type</option>
+    <option value="directTitle">Direct Title</option>
+    <option value="topicCluster">Topic Cluster</option>
     </select>
+
     
     <!-- Direct Title Fields -->
     <div id="directTitleFields">
         <label for="title">Title:</label>
         <input type="text" id="title">
         
-        <label for="projectType">Project Type:</label>
-        <select id="projectType">
+        <label for="ideaProjectType">Project Type:</label>
+        <select id="ideaProjectType">
             <!-- Options will be populated dynamically -->
         </select>
         
-        <label for="persona">Persona:</label>
-        <select id="persona">
+        <label for="ideaPersona">Persona:</label>
+        <select id="ideaPersona">
             <!-- Options will be populated dynamically -->
         </select>
     </div>
