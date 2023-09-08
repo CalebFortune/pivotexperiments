@@ -20,7 +20,8 @@ let projectTypeData = [];
 let personaData = [];
 
 // 2. Navigation Functions
-function navigateToPage(pageId) {
+function navigateToPage(pageId, event) {
+    event.preventDefault(); // Prevent default behavior
     const pages = document.querySelectorAll('.page');
     pages.forEach(page => {
         page.style.display = 'none';
@@ -158,6 +159,8 @@ function submitData() {
     collectUserData(); // Collect user data before validating
     if (!validateUserData()) return;
 
+    submitProgress(); // Show submission progress
+
     const UserInput = Parse.Object.extend("UserInput");
     const userInput = new UserInput();
 
@@ -220,6 +223,11 @@ function saveIdea() {
 
     // Provide feedback to the user (optional)
     alert('Idea saved! You can now enter another idea.');
+}
+    function submitProgress() {
+    // This function can show a progress indicator after the summary page when a user submits.
+    // For simplicity, we'll just show an alert, but you can replace this with a more sophisticated progress indicator.
+    alert('Submitting your data, please wait...');
 }
 
 // Call initialization functions or any other setup tasks here
