@@ -56,40 +56,21 @@ async function populateIndustries() {
 
 function populateProjectTypes() {
     const ideaProjectTypeDropdown = document.getElementById('ideaProjectType');
-    // Clear any existing options
-    ideaProjectTypeDropdown.innerHTML = '';
-    
     userData.projectTypes.forEach(projectType => {
-        if (projectType) { // Check if the projectType is not an empty string
-            const option = document.createElement('option');
-            option.value = projectType;
-            option.textContent = projectType;
-            ideaProjectTypeDropdown.appendChild(option);
-        }
-    });
-}
-
-    const ideaProjectTypeDropdown = document.getElementById('ideaProjectType');
-    projectTypeData.forEach(projectType => {
         const option = document.createElement('option');
-        option.value = projectType.get('name');
-        option.textContent = projectType.get('name');
+        option.value = projectType;
+        option.textContent = projectType;
         ideaProjectTypeDropdown.appendChild(option);
     });
 }
 
 function populatePersonas() {
     const ideaPersonaDropdown = document.getElementById('ideaPersona');
-    // Clear any existing options
-    ideaPersonaDropdown.innerHTML = '';
-    
     userData.personas.forEach(persona => {
-        if (persona) { // Check if the persona is not an empty string
-            const option = document.createElement('option');
-            option.value = persona;
-            option.textContent = persona;
-            ideaPersonaDropdown.appendChild(option);
-        }
+        const option = document.createElement('option');
+        option.value = persona;
+        option.textContent = persona;
+        ideaPersonaDropdown.appendChild(option);
     });
 }
 
