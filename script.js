@@ -158,15 +158,17 @@ function submitData() {
     for (let key in userData) {
         userInput.set(key, userData[key]);
     }
+    
     userInput.save().then((response) => {
         console.log('Data saved successfully:', response);
         alert('Data submitted successfully!');
+        document.getElementById('spinner').style.display = 'none'; // Hide spinner
     }).catch((error) => {
         console.error('Error while saving data:', error);
         alert('There was an error submitting your data. Please try again.');
+        document.getElementById('spinner').style.display = 'none'; // Hide spinner
     });
 }
-
 // 6. Additional Utility Functions
 function toggleIdeaTypeFields() {
     const ideaType = document.getElementById('ideaType').value;
