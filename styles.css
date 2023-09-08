@@ -15,7 +15,7 @@ body {
 }
 
 .container {
-    width: 200px; /* Set width to 200px */
+    width: 95%px; /* Set width to 200px */
     padding: 20px;
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
