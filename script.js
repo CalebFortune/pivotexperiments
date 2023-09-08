@@ -268,7 +268,7 @@ function submitProgress() {
         alert('There was an error submitting your data. Please try again.');
         document.getElementById('spinner').style.display = 'none'; // Hide spinner
     });
-}
+
 
 // Call initialization functions or any other setup tasks here
 populateIndustries();
