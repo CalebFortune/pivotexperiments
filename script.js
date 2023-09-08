@@ -29,6 +29,9 @@ function navigateToPage(pageId, event) {
         populateProjectTypes();
         populatePersonas();
     }
+    if (pageId === 'summaryPage') {
+        populateSummary();
+    }
 }
 
 // 3. Dynamic Field Population
@@ -88,7 +91,7 @@ function collectUserData() {
     userData.company = document.getElementById('company').value;
     userData.industry = document.getElementById('industry').value;
     userData.timeFrame = document.getElementById('timeFrame').value;
-    userData.frequency = document.getElementById('frequency').value;
+    userData.frequency = parseInt(document.getElementById('frequency').value, 10);
     userData.frequencyType = document.getElementById('frequencyType').value;
     // Assuming you have multiple projectType and persona fields, you can adjust as needed
     userData.projectTypes = Array.from(document.querySelectorAll('.projectType')).map(el => el.value);
@@ -140,6 +143,10 @@ function validateUserData() {
 
 // 5. Data Submission
 function submitData() {
+    if (userData.ideas.length === 0) {
+        alert('Please add at least one idea before submitting.');
+        return;
+    }
     collectUserData(); // Collect user data before validating
     if (!validateUserData()) return;
 
@@ -151,12 +158,12 @@ function submitData() {
     for (let key in userData) {
         userInput.set(key, userData[key]);
     }
-
     userInput.save().then((response) => {
         console.log('Data saved successfully:', response);
         alert('Data submitted successfully!');
     }).catch((error) => {
         console.error('Error while saving data:', error);
+        alert('There was an error submitting your data. Please try again.');
     });
 }
 
@@ -170,6 +177,45 @@ function toggleIdeaTypeFields() {
     }
     document.getElementById('directTitleFields').style.display = (ideaType === 'directTitle') ? 'block' : 'none';
     document.getElementById('topicClusterField').style.display = (ideaType === 'topicCluster') ? 'block' : 'none';
+}
+function populateSummary() {
+    document.getElementById('summaryName').textContent = userData.fullName;
+    document.getElementById('summaryCompany').textContent = userData.company;
+    document.getElementById('summaryIndustry').textContent = userData.industry;
+    document.getElementById('summaryTimeFrame').textContent = userData.timeFrame;
+    document.getElementById('summaryFrequency').textContent = userData.frequency;
+    document.getElementById('summaryFrequencyType').textContent = userData.frequencyType;
+    document.getElementById('summaryProjectTypes').textContent = userData.projectTypes.join(', ');
+    document.getElementById('summaryPersonas').textContent = userData.personas.join(', ');
+    document.getElementById('summaryTotalIdeas').textContent = userData.ideas.length;
+
+    // Calculate the required number of ideas
+    let totalPeriods; // This will store the total number of weeks or months
+
+    switch (userData.timeFrame) {
+        case 'month':
+            totalPeriods = 1;
+            break;
+        case 'quarter':
+            totalPeriods = 3;
+            break;
+        case '6months':
+            totalPeriods = 6;
+            break;
+        case 'year':
+            totalPeriods = 12;
+            break;
+        default:
+            totalPeriods = 0;
+    }
+
+    if (userData.frequencyType === 'week') {
+        totalPeriods *= 4; // Convert months to weeks
+    }
+
+    const requiredIdeas = totalPeriods * userData.frequency;
+
+    document.getElementById('requiredIdeasCount').textContent = requiredIdeas;
 }
 
 function saveIdea() {
@@ -208,10 +254,18 @@ function saveIdea() {
     // Provide feedback to the user (optional)
     alert('Idea saved! You can now enter another idea.');
 }
-    function submitProgress() {
-    // This function can show a progress indicator after the summary page when a user submits.
-    // For simplicity, we'll just show an alert, but you can replace this with a more sophisticated progress indicator.
-    alert('Submitting your data, please wait...');
+function submitProgress() {
+    document.getElementById('spinner').style.display = 'block';
+}
+    userInput.save().then((response) => {
+        console.log('Data saved successfully:', response);
+        alert('Data submitted successfully!');
+        document.getElementById('spinner').style.display = 'none'; // Hide spinner
+    }).catch((error) => {
+        console.error('Error while saving data:', error);
+        alert('There was an error submitting your data. Please try again.');
+        document.getElementById('spinner').style.display = 'none'; // Hide spinner
+    });
 }
 
 // Call initialization functions or any other setup tasks here
