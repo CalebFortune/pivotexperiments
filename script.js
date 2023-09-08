@@ -48,11 +48,13 @@ async function populateProjectTypes() {
     try {
         const projectTypes = await query.find();
         const projectTypeDropdown = document.getElementById('projectType');
+        const ideaProjectTypeDropdown = document.getElementById('ideaProjectType');
         projectTypes.forEach(projectType => {
             const option = document.createElement('option');
             option.value = projectType.get('name');
             option.textContent = projectType.get('name');
-            projectTypeDropdown.appendChild(option);
+            projectTypeDropdown.appendChild(option.cloneNode(true));
+            ideaProjectTypeDropdown.appendChild(option);
         });
     } catch (error) {
         console.error('Error fetching project types:', error);
@@ -65,11 +67,13 @@ async function populatePersonas() {
     try {
         const personas = await query.find();
         const personaDropdown = document.getElementById('persona');
+        const ideaPersonaDropdown = document.getElementById('ideaPersona');
         personas.forEach(persona => {
             const option = document.createElement('option');
             option.value = persona.get('name');
             option.textContent = persona.get('name');
-            personaDropdown.appendChild(option);
+            personaDropdown.appendChild(option.cloneNode(true));
+            ideaPersonaDropdown.appendChild(option);
         });
     } catch (error) {
         console.error('Error fetching personas:', error);
