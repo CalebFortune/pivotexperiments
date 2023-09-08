@@ -8,31 +8,34 @@ body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
     color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
 }
 
 .container {
-    max-width: 800px;
-    margin: 50px auto;
+    width: 200px; /* Set width to 200px */
     padding: 20px;
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
+    text-align: center; /* Center text elements */
 }
 
 h1 {
-    text-align: center;
     margin-bottom: 20px;
     color: #2c3e50;
 }
 
 form {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column; /* Stack elements vertically */
     gap: 20px;
+    align-items: center; /* Center form elements */
 }
 
 label {
-    flex: 1 1 100%;
     margin-bottom: 5px;
     font-weight: bold;
 }
@@ -41,7 +44,7 @@ input[type="text"],
 input[type="number"], 
 textarea, 
 select {
-    width: 100%;
+    width: 100%; /* Take up full width of the container */
     padding: 10px;
     margin-bottom: 20px;
     border: 1px solid #ccc;
@@ -54,7 +57,7 @@ textarea {
 }
 
 button {
-    background-color: #3498db;
+    background-color: #FF9E17; /* Updated button color */
     color: #fff;
     padding: 10px 20px;
     border: none;
@@ -65,7 +68,7 @@ button {
 }
 
 button:hover {
-    background-color: #2980b9;
+    background-color: #E58A07; /* Darkened version of #FF9E17 for hover */
 }
 
 #calendarOutput {
@@ -73,20 +76,16 @@ button:hover {
 }
 
 .page {
-    display: none; /* By default, pages are hidden */
+    display: none;
 }
 
-/* Styling for Direct Title and Topic Cluster sections */
 #directTitleFields, 
 #topicClusterField {
-    display: none; /* Initially hidden */
+    display: none;
 }
 
-/* Styling for displaying idea count */
 .idea-count-display {
     font-weight: bold;
     margin-bottom: 20px;
-    color: #e74c3c; /* Red color for emphasis, but this can be changed */
+    color: #e74c3c;
 }
-
-
