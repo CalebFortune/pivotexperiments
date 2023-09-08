@@ -9,46 +9,47 @@
 </head>
 <body>
 
-<!-- User Details Page -->
-<div id="userDetailsPage" class="page">
-    <h2>User Details</h2>
-    <label for="fullName">Full Name:</label>
-    <input type="text" id="fullName">
-    
-    <label for="company">Company:</label>
-    <input type="text" id="company">
-    
-    <label for="industry">Industry:</label>
-    <select id="industry">
-        <!-- Options will be populated dynamically -->
-    </select>
-    
-    <button onclick="navigateToPage('timeFrequencyPage')">Next</button>
-</div>
+<form id="contentForm">
+    <!-- User Details Page -->
+    <div id="userDetailsPage" class="page">
+        <h2>User Details</h2>
+        <label for="fullName">Full Name:</label>
+        <input type="text" id="fullName">
+        
+        <label for="company">Company:</label>
+        <input type="text" id="company">
+        
+        <label for="industry">Industry:</label>
+        <select id="industry">
+            <!-- Options will be populated dynamically -->
+        </select>
+        
+        <button type="button" onclick="navigateToPage('timeFrequencyPage')">Next</button>
+    </div>
 
-<!-- Time and Frequency Page -->
-<div id="timeFrequencyPage" class="page" style="display: none;">
-    <h2>Time and Frequency</h2>
-    <label for="timeFrame">Time Frame:</label>
-    <select id="timeFrame">
-        <option value="month">Month</option>
-        <option value="quarter">Quarter</option>
-        <option value="6months">6 Months</option>
-        <option value="year">1 Year</option>
-    </select>
-    
-    <label for="frequency">Frequency:</label>
-    <input type="number" id="frequency">
-    
-    <label for="frequencyType">Frequency Type:</label>
-    <select id="frequencyType">
-        <option value="week">Per Week</option>
-        <option value="month">Per Month</option>
-    </select>
-    
-    <button onclick="navigateToPage('userDetailsPage')">Back</button>
-    <button onclick="navigateToPage('keyFactorsPage')">Next</button>
-</div>
+    <!-- Time and Frequency Page -->
+    <div id="timeFrequencyPage" class="page" style="display: none;">
+        <h2>Time and Frequency</h2>
+        <label for="timeFrame">Time Frame:</label>
+        <select id="timeFrame">
+            <option value="month">Month</option>
+            <option value="quarter">Quarter</option>
+            <option value="6months">6 Months</option>
+            <option value="year">1 Year</option>
+        </select>
+        
+        <label for="frequency">Frequency:</label>
+        <input type="number" id="frequency">
+        
+        <label for="frequencyType">Frequency Type:</label>
+        <select id="frequencyType">
+            <option value="week">Per Week</option>
+            <option value="month">Per Month</option>
+        </select>
+        
+        <button type="button" onclick="navigateToPage('userDetailsPage')">Back</button>
+        <button type="button" onclick="navigateToPage('keyFactorsPage')">Next</button>
+    </div>
 
 <!-- Key Factors Page -->
 <div id="keyFactorsPage" class="page" style="display: none;">
@@ -123,10 +124,12 @@
     <h3>Ideas</h3>
     <p><strong>Ideas Submitted:</strong> <span id="summaryTotalIdeas"></span> out of <span id="requiredIdeasCount"></span></p>
 
-    <button onclick="navigateToPage('ideaInputPage')">Back</button>
-    <button id="finalSubmitButton">Submit</button>
-</div>
+    <button type="button" onclick="navigateToPage('ideaInputPage')">Back</button>
+        <button type="submit">Submit</button>
+    </div>
+</form>
 
 <script src="script.js" defer></script>
 </body>
+</html>
 </html>
