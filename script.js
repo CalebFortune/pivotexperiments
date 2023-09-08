@@ -65,13 +65,11 @@ async function populateProjectTypes() {
         }
     }
 
-    const projectTypeDropdown = document.getElementById('projectType');
     const ideaProjectTypeDropdown = document.getElementById('ideaProjectType');
     projectTypeData.forEach(projectType => {
         const option = document.createElement('option');
         option.value = projectType.get('name');
         option.textContent = projectType.get('name');
-        projectTypeDropdown.appendChild(option.cloneNode(true));
         ideaProjectTypeDropdown.appendChild(option);
     });
 }
@@ -87,14 +85,12 @@ async function populatePersonas() {
         }
     }
 
-    const personaDropdown = document.getElementById('persona');
     const ideaPersonaDropdown = document.getElementById('ideaPersona');
     personaData.forEach(persona => {
         const option = document.createElement('option');
         option.value = persona.get('name');
         option.textContent = persona.get('name');
-        personaDropdown.appendChild(option.cloneNode(true));
-        ideaPersonaDropdown.appendChild(option);
+        ideaPersonaDropdown.appendChild(option.cloneNode(true)); // Use cloneNode to ensure a fresh copy for each dropdown
     });
 }
 
