@@ -55,18 +55,19 @@
 <div id="keyFactorsPage" class="page" style="display: none;">
     <h2>Key Factors</h2>
     <h3>Project Types (In order of importance)</h3>
-    <input type="text" placeholder="1st Priority">
-    <input type="text" placeholder="2nd Priority">
-    <input type="text" placeholder="3rd Priority">
+    <input type="text" class="projectType" placeholder="1st Priority">
+    <input type="text" class="projectType" placeholder="2nd Priority">
+    <input type="text" class="projectType" placeholder="3rd Priority">
     
     <h3>Personas (In order of importance)</h3>
-    <input type="text" placeholder="1st Priority">
-    <input type="text" placeholder="2nd Priority">
-    <input type="text" placeholder="3rd Priority">
+    <input type="text" class="persona" placeholder="1st Priority">
+    <input type="text" class="persona" placeholder="2nd Priority">
+    <input type="text" class="persona" placeholder="3rd Priority">
     
-    <button onclick="navigateToPage('timeFrequencyPage')">Back</button>
-    <button onclick="navigateToPage('ideaInputPage')">Next</button>
+    <button onclick="collectUserData(); navigateToPage('timeFrequencyPage')">Back</button>
+    <button onclick="collectUserData(); navigateToPage('ideaInputPage')">Next</button>
 </div>
+
 
 <!-- Idea Input Page -->
 <div id="ideaInputPage" class="page" style="display: none;">
