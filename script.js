@@ -116,6 +116,7 @@ async function populateIndustries() {
         console.error('Error fetching industries:', error);
     }
 }
+
 // Populate ProjectTypes
 async function populateProjectTypes() {
     const ProjectType = Parse.Object.extend("ProjectType");
@@ -133,6 +134,7 @@ async function populateProjectTypes() {
         console.error('Error fetching project types:', error);
     }
 }
+
 // Populate Personas
 async function populatePersonas() {
     const Persona = Parse.Object.extend("Persona");
@@ -150,6 +152,7 @@ async function populatePersonas() {
         console.error('Error fetching personas:', error);
     }
 }
+
 // Call initialization functions or any other setup tasks here
 populateIndustries();
 populateProjectTypes();
