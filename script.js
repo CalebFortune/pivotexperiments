@@ -159,8 +159,50 @@ function submitData() {
 // 6. Additional Utility Functions
 function toggleIdeaTypeFields() {
     const ideaType = document.getElementById('ideaType').value;
+    if (!ideaType) {
+        document.getElementById('directTitleFields').style.display = 'none';
+        document.getElementById('topicClusterField').style.display = 'none';
+        return;
+    }
     document.getElementById('directTitleFields').style.display = (ideaType === 'directTitle') ? 'block' : 'none';
     document.getElementById('topicClusterField').style.display = (ideaType === 'topicCluster') ? 'block' : 'none';
+}
+
+function saveIdea() {
+    // Collect data from the Idea Input section
+    const ideaType = document.getElementById('ideaType').value;
+    let ideaData = {};
+
+    if (ideaType === 'directTitle') {
+        ideaData = {
+            type: 'directTitle',
+            title: document.getElementById('title').value,
+            projectType: document.getElementById('ideaProjectType').value,
+            persona: document.getElementById('ideaPersona').value
+        };
+    } else if (ideaType === 'topicCluster') {
+        ideaData = {
+            type: 'topicCluster',
+            topic: document.getElementById('topic').value
+        };
+    }
+
+    // Store the idea data in the userData.ideas array
+    userData.ideas.push(ideaData);
+
+    // Clear the input fields
+    document.getElementById('ideaType').selectedIndex = 0; // Reset to "Select Idea Type"
+    document.getElementById('title').value = '';
+    document.getElementById('ideaProjectType').selectedIndex = 0;
+    document.getElementById('ideaPersona').selectedIndex = 0;
+    document.getElementById('topic').value = '';
+
+    // Hide the directTitleFields and topicClusterField sections
+    document.getElementById('directTitleFields').style.display = 'none';
+    document.getElementById('topicClusterField').style.display = 'none';
+
+    // Provide feedback to the user (optional)
+    alert('Idea saved! You can now enter another idea.');
 }
 
 // Call initialization functions or any other setup tasks here
