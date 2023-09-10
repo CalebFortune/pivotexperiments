@@ -374,6 +374,7 @@ $('#calendar').fullCalendar('changeView', 'month');
 // For Task View (List)
 $('#calendar').fullCalendar('changeView', 'listMonth');
     
+initializeCalendar();
 
 // Call initialization functions or any other setup tasks here
 populateIndustries();
