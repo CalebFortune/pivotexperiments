@@ -284,14 +284,17 @@ function generateContentIdeas() {
     organizeContentIdeas(contentIdeas);
 }
 function organizeContentIdeas(ideas) {
-    // Organize ideas based on SEO, Project Type, Persona
-    // ...
+    // Sort ideas based on SEO, Project Type, Persona
+    ideas.sort((a, b) => {
+        // Add your sorting logic here
+        // For simplicity, we're just using a basic alphabetical sort
+        return a.localeCompare(b);
+    });
 
     // Assign specific weekdays to each idea based on the user's frequency input
-    // ...
+    const organizedIdeas = assignDatesToIdeas(ideas);
 
-    // Display the organized ideas to the user in the Task View
-    displayIdeasInTaskView(ideas);
+    displayIdeasInTaskView(organizedIdeas);
 }
 function displayIdeasInTaskView(ideas) {
     // Update the frontend to display the ideas in the described format
@@ -299,6 +302,49 @@ function displayIdeasInTaskView(ideas) {
 
     // Provide an option for users to toggle to the Calendar View
     // ...
+}
+function assignDatesToIdeas(ideas) {
+    let currentDate = new Date();
+    const organizedIdeasWithDates = [];
+
+    ideas.forEach(idea => {
+        // Skip weekends
+        while (currentDate.getDay() === 0 || currentDate.getDay() === 6) {
+            currentDate.setDate(currentDate.getDate() + 1);
+        }
+
+        organizedIdeasWithDates.push({
+            date: new Date(currentDate),
+            idea: idea
+        });
+
+        currentDate.setDate(currentDate.getDate() + 1);
+    });
+
+    return organizedIdeasWithDates;
+}
+function displayIdeasInTaskView(ideas) {
+    const taskViewContainer = document.createElement('div');
+    taskViewContainer.id = 'taskViewContainer';
+
+    ideas.forEach(ideaObj => {
+        const ideaElement = document.createElement('div');
+        ideaElement.className = 'ideaElement';
+
+        const dateElement = document.createElement('p');
+        dateElement.textContent = ideaObj.date.toDateString();
+
+        const ideaTextElement = document.createElement('p');
+        ideaTextElement.textContent = ideaObj.idea;
+
+        // Add more elements for project type, persona, etc.
+
+        ideaElement.appendChild(dateElement);
+        ideaElement.appendChild(ideaTextElement);
+        taskViewContainer.appendChild(ideaElement);
+    });
+
+    document.body.appendChild(taskViewContainer);
 }
 
 
