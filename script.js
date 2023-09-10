@@ -346,7 +346,34 @@ function displayIdeasInTaskView(ideas) {
 
     document.body.appendChild(taskViewContainer);
 }
+function initializeCalendar() {
+    $('#calendar').fullCalendar({
+        defaultView: 'month',
+        validRange: {
+            start: '2023-09-01',  // You can dynamically set this based on user input
+            end: '2023-09-30'    // You can dynamically set this based on user input
+        },
+        weekends: true, // this allows weekends. If you want to hide them set it to false
+        events: [], // We'll populate this with our content ideas later
+        eventClick: function(event) {
+            alert(event.title + '\n' + event.description); // Show more details on click
+        }
+    });
+}
+function addEventsToCalendar(ideas) {
+    const events = ideas.map(idea => ({
+        title: idea.title,
+        start: idea.date, // This should be a date string in the format 'YYYY-MM-DD'
+        description: `${idea.projectType}, ${idea.persona}`
+    }));
+    $('#calendar').fullCalendar('addEventSource', events);
+}
+// For Calendar View
+$('#calendar').fullCalendar('changeView', 'month');
 
+// For Task View (List)
+$('#calendar').fullCalendar('changeView', 'listMonth');
+    
 
 // Call initialization functions or any other setup tasks here
 populateIndustries();
