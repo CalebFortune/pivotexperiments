@@ -323,6 +323,47 @@ function assignDatesToIdeas(ideas) {
 
     return organizedIdeasWithDates;
 }
+function toggleView(viewType) {
+    if (viewType === 'calendar') {
+        $('#calendar').fullCalendar('changeView', 'month');
+        document.getElementById('taskViewContainer').style.display = 'none'; // Hide the task view container
+        document.getElementById('calendar').style.display = 'block'; // Show the calendar
+    } else if (viewType === 'task') {
+        $('#calendar').fullCalendar('changeView', 'listMonth');
+        document.getElementById('calendar').style.display = 'none'; // Hide the calendar
+        document.getElementById('taskViewContainer').style.display = 'block'; // Show the task view container
+    }
+}
+function displayIdeasInTaskView(ideas) {
+    let taskViewContainer = document.getElementById('taskViewContainer');
+    
+    // If the taskViewContainer doesn't exist, create one
+    if (!taskViewContainer) {
+        taskViewContainer = document.createElement('div');
+        taskViewContainer.id = 'taskViewContainer';
+        document.body.appendChild(taskViewContainer);
+    } else {
+        taskViewContainer.innerHTML = ''; // Clear existing content if the container already exists
+    }
+
+    ideas.forEach(ideaObj => {
+        const ideaElement = document.createElement('div');
+        ideaElement.className = 'ideaElement';
+
+        const dateElement = document.createElement('p');
+        dateElement.textContent = ideaObj.date.toDateString();
+
+        const ideaTextElement = document.createElement('p');
+        ideaTextElement.textContent = ideaObj.idea;
+
+        // Add more elements for project type, persona, etc.
+
+        ideaElement.appendChild(dateElement);
+        ideaElement.appendChild(ideaTextElement);
+        taskViewContainer.appendChild(ideaElement);
+    });
+}
+
 function displayIdeasInTaskView(ideas) {
     const taskViewContainer = document.createElement('div');
     taskViewContainer.id = 'taskViewContainer';
@@ -360,6 +401,28 @@ function initializeCalendar() {
         }
     });
 }
+function assignDatesToIdeas(ideas) {
+    let currentDate = new Date();
+    const organizedIdeasWithDates = [];
+    const incrementDays = (userData.frequencyType === 'week') ? 7 / userData.frequency : 30 / userData.frequency;
+
+    ideas.forEach(idea => {
+        // Skip weekends
+        while (currentDate.getDay() === 0 || currentDate.getDay() === 6) {
+            currentDate.setDate(currentDate.getDate() + 1);
+        }
+
+        organizedIdeasWithDates.push({
+            date: new Date(currentDate),
+            idea: idea
+        });
+
+        currentDate.setDate(currentDate.getDate() + incrementDays);
+    });
+
+    return organizedIdeasWithDates;
+}
+
 function addEventsToCalendar(ideas) {
     const events = ideas.map(idea => ({
         title: idea.title,
