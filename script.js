@@ -316,19 +316,47 @@ async function fetchOpenAI(prompt) {
     // Organize the content ideas
     organizeContentIdeas(contentIdeas);
 }
-function organizeContentIdeas(ideas) {
-    // Sort ideas based on SEO, Project Type, Persona
+async function organizeContentIdeas(ideas) {
+    // Fetch industry keywords based on the user's selected industry
+    const industryKeywords = await getIndustryKeywords(userData.industry);
+
+    // Sort based on SEO
     ideas.sort((a, b) => {
-        // Add your sorting logic here
-        // For simplicity, we're just using a basic alphabetical sort
-        return a.localeCompare(b);
+        const aContainsKeyword = industryKeywords.some(keyword => a.title.includes(keyword));
+        const bContainsKeyword = industryKeywords.some(keyword => b.title.includes(keyword));
+        if (aContainsKeyword && !bContainsKeyword) return -1;
+        if (!aContainsKeyword && bContainsKeyword) return 1;
+        return 0;
     });
 
-    // Assign specific weekdays to each idea based on the user's frequency input
-    const organizedIdeas = assignDatesToIdeas(ideas);
+    // Sort based on Project Type and Persona
+    ideas.sort((a, b) => {
+        const aPriority = getIdeaPriority(a);
+        const bPriority = getIdeaPriority(b);
+        return aPriority - bPriority;
+    });
 
-    displayIdeasInTaskView(organizedIdeas);
+    return ideas;
 }
+
+function getIdeaPriority(idea) {
+    const projectTypePriority = userData.projectTypes.indexOf(idea.projectType);
+    const personaPriority = userData.personas.indexOf(idea.persona);
+
+    // Calculate a combined priority score. This can be adjusted based on how you want to weigh each factor.
+    return projectTypePriority * 10 + personaPriority;
+}
+
+async function getIndustryKeywords(industry) {
+    try {
+        const response = await Parse.Cloud.run('getIndustryKeywords', { industryName: industry });
+        return response;
+    } catch (error) {
+        console.error("Error fetching industry keywords:", error);
+        return [];
+    }
+}
+
 function displayIdeasInTaskView(ideas) {
     // Update the frontend to display the ideas in the described format
     // ...
