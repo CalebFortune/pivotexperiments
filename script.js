@@ -334,17 +334,13 @@ async function generateContentIdeaWithOpenAI() {
 }
 
 async function fetchOpenAI(prompt) {
-    return await fetch('https://api.openai.com/v1/engines/davinci/completions', {
-        method: 'POST',
-        headers: {
-            'Authorization': 'Bearer YOUR_OPENAI_API_KEY',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            prompt: prompt,
-            max_tokens: 200  // Adjust as needed
-        })
-    }).then(res => res.json());
+    try {
+        const response = await Parse.Cloud.run('generateContentWithOpenAI', { prompt: prompt });
+        return response;
+    } catch (error) {
+        console.error("Error fetching from OpenAI:", error);
+        return null;
+    }
 }
 
     // If no Topic Clusters but there are Direct Titles, use them to generate complementary content ideas
