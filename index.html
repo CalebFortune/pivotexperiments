@@ -144,7 +144,19 @@
 <p id="submissionMessage" style="display: none; text-align: center;">Information has been saved, processing...</p>
 </div>
 
-<div id="calendar"></div>
+<div id="calendar">
+    <!-- Export Button -->
+<button id="exportToCalendarButton">Export to Calendar</button>
+
+<!-- Modal Dialog for Export Options -->
+<div id="exportOptionsModal" style="display: none;">
+    <h3>Select Export Format:</h3>
+    <button onclick="handleExport('ics')">.ics</button>
+    <button onclick="handleExport('csv')">.csv</button>
+    <button onclick="handleExport('json')">JSON</button>
+</div>
+
+</div>
     
 </form>
 
