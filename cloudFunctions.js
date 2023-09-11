@@ -187,4 +187,27 @@ document.addEventListener('DOMContentLoaded', function() {
   });
   calendar.render();
 });
+// Calling OpenAI //
+const axios = require('axios');
+
+Parse.Cloud.define('generateContentWithOpenAI', async (request) => {
+    const { prompt } = request.params;
+    const OPENAI_API_KEY = 'YOUR_OPENAI_API_KEY'; // Store your OpenAI API key here
+
+    try {
+        const response = await axios.post('https://api.openai.com/v1/engines/davinci/completions', {
+            prompt: prompt,
+            max_tokens: 200  // Adjust as needed
+        }, {
+            headers: {
+                'Authorization': `Bearer ${OPENAI_API_KEY}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        return response.data;
+    } catch (error) {
+        throw new Parse.Error(Parse.Error.INVALID_QUERY, "OpenAI API call failed");
+    }
+});
 
