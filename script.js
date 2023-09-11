@@ -32,6 +32,9 @@ function navigateToPage(pageId, event) {
     if (pageId === 'summaryPage') {
         populateSummary();
     }
+    if (pageId === 'finalPage') {
+    document.getElementById('exportToCalendarButton').style.display = 'block';
+}
 }
 
 // 3. Dynamic Field Population
