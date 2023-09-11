@@ -439,6 +439,96 @@ $('#calendar').fullCalendar('changeView', 'listMonth');
     
 initializeCalendar();
 
+function exportToICS() {
+    // Create an ICS content string
+    let icsContent = "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//YourAppName//EN\n";
+
+    userData.ideas.forEach(ideaObj => {
+        const eventDate = new Date(ideaObj.date);
+        const endDate = new Date(eventDate);
+        endDate.setHours(endDate.getHours() + 1); // Assuming each idea is an hour-long event
+
+        icsContent += "BEGIN:VEVENT\n";
+        icsContent += "UID:" + eventDate.getTime() + "@yourappname.com\n"; // Unique identifier
+        icsContent += "DTSTAMP:" + formatICSDate(new Date()) + "\n"; // Current timestamp
+        icsContent += "DTSTART:" + formatICSDate(eventDate) + "\n";
+        icsContent += "DTEND:" + formatICSDate(endDate) + "\n";
+        icsContent += "SUMMARY:" + ideaObj.idea + "\n";
+        icsContent += "END:VEVENT\n";
+    });
+
+    icsContent += "END:VCALENDAR";
+
+    // Create a blob link to download the ICS
+    const blob = new Blob([icsContent], { type: 'text/calendar' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'content_ideas.ics';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+function formatICSDate(date) {
+    const pad = num => (num < 10 ? '0' : '') + num;
+    return date.getUTCFullYear() +
+           pad(date.getUTCMonth() + 1) +
+           pad(date.getUTCDate()) + 'T' +
+           pad(date.getUTCHours()) +
+           pad(date.getUTCMinutes()) +
+           pad(date.getUTCSeconds()) + 'Z';
+}
+function exportToCSV() {
+    let csvContent = "data:text/csv;charset=utf-8,";
+    csvContent += "Date,Idea\n"; // Header
+
+    userData.ideas.forEach(ideaObj => {
+        csvContent += ideaObj.date + "," + ideaObj.idea + "\n";
+    });
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "content_ideas.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+function exportToJSON() {
+    const jsonContent = JSON.stringify(userData.ideas, null, 2);
+    const blob = new Blob([jsonContent], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'content_ideas.json';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+function handleExport(format) {
+    switch (format) {
+        case 'ics':
+            exportToICS();
+            break;
+        case 'csv':
+            exportToCSV();
+            break;
+        case 'json':
+            exportToJSON();
+            break;
+        default:
+            alert('Invalid export format selected.');
+    }
+    // Close the modal after export
+    document.getElementById('exportOptionsModal').style.display = 'none';
+}
+document.getElementById('exportToCalendarButton').addEventListener('click', function() {
+    document.getElementById('exportOptionsModal').style.display = 'block';
+});
+
+
 // Call initialization functions or any other setup tasks here
 populateIndustries();
 
