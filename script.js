@@ -269,6 +269,33 @@ function saveIdea() {
 function submitProgress() {
     document.getElementById('spinner').style.display = 'block';
 }
+function calculateTotalIdeasNeeded() {
+    let totalPeriods; // This will store the total number of weeks or months
+
+    switch (userData.timeFrame) {
+        case 'month':
+            totalPeriods = 1;
+            break;
+        case 'quarter':
+            totalPeriods = 3;
+            break;
+        case '6months':
+            totalPeriods = 6;
+            break;
+        case 'year':
+            totalPeriods = 12;
+            break;
+        default:
+            totalPeriods = 0;
+    }
+
+    if (userData.frequencyType === 'week') {
+        totalPeriods *= 4; // Convert months to weeks
+    }
+
+    return totalPeriods * userData.frequency;
+}
+
 async function generateContentIdeaWithOpenAI() {
     const totalIdeasNeeded = calculateTotalIdeasNeeded();
     const directTitlesCount = userData.ideas.length;
