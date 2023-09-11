@@ -318,7 +318,7 @@ async function fetchOpenAI(prompt) {
 
     // Organize the content ideas
     organizeContentIdeas(contentIdeas);
-}
+
 async function organizeContentIdeas(ideas) {
     // Fetch industry keywords based on the user's selected industry
     const industryKeywords = await getIndustryKeywords(userData.industry);
