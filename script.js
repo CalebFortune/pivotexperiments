@@ -162,12 +162,15 @@ function submitData() {
         userInput.set(key, userData[key]);
     }
     
-    userInput.save().then((response) => {
+    userInput.save().then(async (response) => {
         console.log('Data saved successfully:', response);
         document.getElementById('submissionMessage').style.display = 'block';
       
         // Generate content ideas based on user input
-        generateContentIdeas();
+        const contentIdeas = await generateContentIdeas();
+
+        // Organize the content ideas
+        organizeContentIdeas(contentIdeas);
 
         document.getElementById('spinner').style.display = 'none'; // Hide spinner
     }).catch((error) => {
@@ -294,6 +297,10 @@ async function generateContentIdeaWithOpenAI() {
             };
         });
         generatedIdeas.push(...ideas);
+         // Combine user-submitted Direct Titles with AI-generated ideas
+    const combinedIdeas = [...userData.ideas, ...generatedIdeas];
+
+    return combinedIdeas;
     }
 
     return generatedIdeas;
@@ -316,8 +323,6 @@ async function fetchOpenAI(prompt) {
     // If no Topic Clusters but there are Direct Titles, use them to generate complementary content ideas
     // ... (similar logic as above)
 
-    // Organize the content ideas
-    organizeContentIdeas(contentIdeas);
 
 async function organizeContentIdeas(ideas) {
     // Fetch industry keywords based on the user's selected industry
