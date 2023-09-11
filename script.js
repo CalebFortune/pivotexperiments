@@ -263,19 +263,52 @@ function saveIdea() {
 function submitProgress() {
     document.getElementById('spinner').style.display = 'block';
 }
-function generateContentIdeas() {
-    // Add Direct Titles to our list of content ideas
-    const contentIdeas = [...userData.ideas];
+async function generateContentIdeaWithOpenAI() {
+    const totalIdeasNeeded = calculateTotalIdeasNeeded();
+    const directTitlesCount = userData.ideas.length;
+    const ideasToGenerate = totalIdeasNeeded - directTitlesCount;
 
-    // If Topic Clusters are provided, use them to generate content ideas
+    let prompts = [];
+
     if (userData.topicClusters && userData.topicClusters.length) {
-        userData.topicClusters.forEach(cluster => {
-            // Use predefined templates or integrate with ChatGPT to generate ideas
-            // For simplicity, we'll use a basic template here
-            const idea = `A deep dive into ${cluster}`;
-            contentIdeas.push(idea);
-        });
+        for (const cluster of userData.topicClusters) {
+            prompts.push(`Generate ${ideasToGenerate} content ideas based on the topic cluster: ${cluster}. For each idea, provide a title, project type, and persona. Format: "Title: [title], Project Type: [type], Persona: [persona]"`);
+        }
+    } else {
+        const titlesPrompt = userData.ideas.map(title => `Title: ${title.title}, Project Type: ${title.projectType}, Persona: ${title.persona}`).join('\n');
+        prompts.push(`Based on the following Direct Titles, generate ${ideasToGenerate} supporting content ideas:\n${titlesPrompt}\nFormat for each idea: "Title: [title], Project Type: [type], Persona: [persona]"`);
     }
+
+    let generatedIdeas = [];
+    for (const prompt of prompts) {
+        const response = await fetchOpenAI(prompt);
+        const ideas = response.choices[0].text.trim().split('\n').map(ideaText => {
+            const [title, projectType, persona] = ideaText.split(', ').map(part => part.split(': ')[1]);
+            return {
+                title: title,
+                projectType: projectType,
+                persona: persona
+            };
+        });
+        generatedIdeas.push(...ideas);
+    }
+
+    return generatedIdeas;
+}
+
+async function fetchOpenAI(prompt) {
+    return await fetch('https://api.openai.com/v1/engines/davinci/completions', {
+        method: 'POST',
+        headers: {
+            'Authorization': 'Bearer YOUR_OPENAI_API_KEY',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            prompt: prompt,
+            max_tokens: 200  // Adjust as needed
+        })
+    }).then(res => res.json());
+}
 
     // If no Topic Clusters but there are Direct Titles, use them to generate complementary content ideas
     // ... (similar logic as above)
