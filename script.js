@@ -357,33 +357,6 @@ async function getIndustryKeywords(industry) {
     }
 }
 
-function displayIdeasInTaskView(ideas) {
-    // Update the frontend to display the ideas in the described format
-    // ...
-
-    // Provide an option for users to toggle to the Calendar View
-    // ...
-}
-function assignDatesToIdeas(ideas) {
-    let currentDate = new Date();
-    const organizedIdeasWithDates = [];
-
-    ideas.forEach(idea => {
-        // Skip weekends
-        while (currentDate.getDay() === 0 || currentDate.getDay() === 6) {
-            currentDate.setDate(currentDate.getDate() + 1);
-        }
-
-        organizedIdeasWithDates.push({
-            date: new Date(currentDate),
-            idea: idea
-        });
-
-        currentDate.setDate(currentDate.getDate() + 1);
-    });
-
-    return organizedIdeasWithDates;
-}
 function toggleView(viewType) {
     if (viewType === 'calendar') {
         $('#calendar').fullCalendar('changeView', 'month');
@@ -425,29 +398,6 @@ function displayIdeasInTaskView(ideas) {
     });
 }
 
-function displayIdeasInTaskView(ideas) {
-    const taskViewContainer = document.createElement('div');
-    taskViewContainer.id = 'taskViewContainer';
-
-    ideas.forEach(ideaObj => {
-        const ideaElement = document.createElement('div');
-        ideaElement.className = 'ideaElement';
-
-        const dateElement = document.createElement('p');
-        dateElement.textContent = ideaObj.date.toDateString();
-
-        const ideaTextElement = document.createElement('p');
-        ideaTextElement.textContent = ideaObj.idea;
-
-        // Add more elements for project type, persona, etc.
-
-        ideaElement.appendChild(dateElement);
-        ideaElement.appendChild(ideaTextElement);
-        taskViewContainer.appendChild(ideaElement);
-    });
-
-    document.body.appendChild(taskViewContainer);
-}
 function initializeCalendar() {
     $('#calendar').fullCalendar({
         defaultView: 'month',
@@ -492,8 +442,6 @@ function addEventsToCalendar(ideas) {
     }));
     $('#calendar').fullCalendar('addEventSource', events);
 }
-// For Calendar View
-$('#calendar').fullCalendar('changeView', 'month');
 
 // For Task View (List)
 $('#calendar').fullCalendar('changeView', 'listMonth');
