@@ -297,40 +297,20 @@ function calculateTotalIdeasNeeded() {
 }
 
 async function generateContentIdeaWithOpenAI() {
-    const totalIdeasNeeded = calculateTotalIdeasNeeded();
-    const directTitlesCount = userData.ideas.length;
-    const ideasToGenerate = totalIdeasNeeded - directTitlesCount;
+    const response = await fetch('https://parseapi.back4app.com/functions/generateContentIdeas', {
+        method: 'POST',
+        headers: {
+            'X-Parse-Application-Id': 'yCVQ6n5s2B2UlAjGznIJy48ZGVqDqWvPkLDafztR', // Replace with your App ID
+            'X-Parse-REST-API-Key': 'UKY7AffhQFkREuy3XBarGcTAash2vMpmuuLy1cgC', // Replace with your REST API Key
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            userData: userData
+        })
+    });
 
-    let prompts = [];
-
-    if (userData.topicClusters && userData.topicClusters.length) {
-        for (const cluster of userData.topicClusters) {
-            prompts.push(`Generate ${ideasToGenerate} content ideas based on the topic cluster: ${cluster}. For each idea, provide a title, project type, and persona. Format: "Title: [title], Project Type: [type], Persona: [persona]"`);
-        }
-    } else {
-        const titlesPrompt = userData.ideas.map(title => `Title: ${title.title}, Project Type: ${title.projectType}, Persona: ${title.persona}`).join('\n');
-        prompts.push(`Based on the following Direct Titles, generate ${ideasToGenerate} supporting content ideas:\n${titlesPrompt}\nFormat for each idea: "Title: [title], Project Type: [type], Persona: [persona]"`);
-    }
-
-    let generatedIdeas = [];
-    for (const prompt of prompts) {
-        const response = await fetchOpenAI(prompt);
-        const ideas = response.choices[0].text.trim().split('\n').map(ideaText => {
-            const [title, projectType, persona] = ideaText.split(', ').map(part => part.split(': ')[1]);
-            return {
-                title: title,
-                projectType: projectType,
-                persona: persona
-            };
-        });
-        generatedIdeas.push(...ideas);
-         // Combine user-submitted Direct Titles with AI-generated ideas
-    const combinedIdeas = [...userData.ideas, ...generatedIdeas];
-
-    return combinedIdeas;
-    }
-
-    return generatedIdeas;
+    const result = await response.json();
+    return result.result;
 }
 
 async function fetchOpenAI(prompt) {
