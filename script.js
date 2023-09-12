@@ -164,6 +164,8 @@ function submitData() {
 
     // Calculate the total number of ideas needed
     const totalIdeasNeeded = calculateTotalIdeasNeeded();
+    const ideasToGenerate = totalIdeasNeeded - userData.ideas.length;
+
     
     userInput.save().then(async (response) => {
         console.log('Data saved successfully:', response);
