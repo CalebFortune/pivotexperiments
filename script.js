@@ -161,13 +161,18 @@ function submitData() {
     for (let key in userData) {
         userInput.set(key, userData[key]);
     }
+
+    // Calculate the total number of ideas needed
+    const totalIdeasNeeded = calculateTotalIdeasNeeded();
     
     userInput.save().then(async (response) => {
         console.log('Data saved successfully:', response);
         document.getElementById('submissionMessage').style.display = 'block';
       
         // Generate content ideas based on user input
-        const contentIdeas = await generateContentIdeas();
+        const generatedTitles = await Parse.Cloud.run('generateTitles', { userInputId: response.id, totalIdeas: totalIdeasNeeded });
+        const prioritizedTitles = await Parse.Cloud.run('prioritizeAndCategorize', { titles: generatedTitles, userInputId: response.id });
+        const contentIdeas = await Parse.Cloud.run('generateContentCalendar', { titles: prioritizedTitles, userInputId: response.id });
 
         // Organize the content ideas
         organizeContentIdeas(contentIdeas);
@@ -179,6 +184,7 @@ function submitData() {
         document.getElementById('spinner').style.display = 'none'; // Hide spinner
     });
 }
+
 // 6. Additional Utility Functions
 function toggleIdeaTypeFields() {
     const ideaType = document.getElementById('ideaType').value;
