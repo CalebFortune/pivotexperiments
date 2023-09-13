@@ -193,11 +193,20 @@ function submitData() {
         console.error('Error:', error);
         
         let errorMessage = 'There was an error submitting your data. Please try again.';
-        if (error.code === SOME_SPECIFIC_ERROR_CODE) {
-            errorMessage = 'Specific error message for this error code.';
-        }
-        // Add more conditions as needed
-
+        switch (error.code) {
+    case Parse.Error.INVALID_SESSION_TOKEN:
+        errorMessage = 'Invalid session token. Please log in again.';
+        break;
+    case Parse.Error.OBJECT_NOT_FOUND:
+        errorMessage = 'The requested object was not found.';
+        break;
+    case Parse.Error.CONNECTION_FAILED:
+        errorMessage = 'Failed to connect to the server. Please check your internet connection.';
+        break;
+    // ... handle other error codes as needed
+    default:
+        errorMessage = 'There was an error submitting your data. Please try again.';
+}
         alert(errorMessage);
         document.getElementById('spinner').style.display = 'none'; // Hide spinner
     });
