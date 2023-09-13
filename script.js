@@ -1,4 +1,4 @@
-Parse.initialize("{{PARSE_APP_ID}}", "{{PARSE_API_KEY}}");
+Parse.initialize(process.env.PARSE_APP_ID, process.env.PARSE_API_KEY);
 Parse.serverURL = 'https://parseapi.back4app.com/';
 
 // 1. Initialization and Global Variables
