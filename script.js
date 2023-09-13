@@ -34,7 +34,10 @@ function navigateToPage(pageId, event) {
     }
     if (pageId === 'finalPage') {
     document.getElementById('exportToCalendarButton').style.display = 'block';
-}
+    }
+    if (pageId === 'finalPage') {
+        initializeCalendar();
+    }
 }
 
 // 3. Dynamic Field Population
