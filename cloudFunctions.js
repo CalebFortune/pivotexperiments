@@ -171,20 +171,23 @@ document.getElementById('exportToCalendarButton').addEventListener('click', func
     document.getElementById('exportOptionsModal').style.display = 'block';
 });
 
-document.addEventListener('DOMContentLoaded', function() {
+function initializeCalendar() {
   var calendarEl = document.getElementById('calendar');
-  var calendar = new FullCalendar.Calendar(calendarEl, {
-    initialView: 'dayGridMonth',
-    validRange: {
-        start: '2023-09-01',
-        end: '2023-09-30'
-    },
-    weekends: true,
-    events: [], // We'll populate this with our content ideas later
-    eventClick: function(info) {
-        alert(info.event.title + '\n' + info.event.extendedProps.description); // Show more details on click
-    }
-  });
-  calendar.render();
-});
+  if (!calendar) { // Check if calendar is already initialized
+    calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth',
+      validRange: {
+          start: '2023-09-01',
+          end: '2023-09-30'
+      },
+      weekends: true,
+      events: [], // We'll populate this with our content ideas later
+      eventClick: function(info) {
+          alert(info.event.title + '\n' + info.event.extendedProps.description); // Show more details on click
+      }
+    });
+    calendar.render();
+  }
+}
+
 
