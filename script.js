@@ -148,7 +148,7 @@ function validateUserData() {
 }
 
 // 5. Data Submission
-function submitData() {
+async function submitData() {
     if (userData.ideas.length === 0) {
         alert('Please add at least one idea before submitting.');
         return;
@@ -175,11 +175,10 @@ function submitData() {
         directTitles: userData.ideas,
         ideasToGenerate: ideasToGenerate
     }).then(async (generatedTitles) => {
-        const prioritizedTitles = await Parse.Cloud.run('prioritizeAndCategorize', { titles: generatedTitles });
-        const contentIdeas = await Parse.Cloud.run('generateContentCalendar', { titles: prioritizedTitles });
+        const contentIdeas = await Parse.Cloud.run('generateContentCalendar', { titles: generatedTitles });
 
         // Organize the content ideas
-        organizeContentIdeas(contentIdeas);
+        const organizedIdeas = await organizeContentIdeas(contentIdeas);
 
         // Save the final user input data
         return userInput.save();
@@ -193,20 +192,11 @@ function submitData() {
         console.error('Error:', error);
         
         let errorMessage = 'There was an error submitting your data. Please try again.';
-        switch (error.code) {
-    case Parse.Error.INVALID_SESSION_TOKEN:
-        errorMessage = 'Invalid session token. Please log in again.';
-        break;
-    case Parse.Error.OBJECT_NOT_FOUND:
-        errorMessage = 'The requested object was not found.';
-        break;
-    case Parse.Error.CONNECTION_FAILED:
-        errorMessage = 'Failed to connect to the server. Please check your internet connection.';
-        break;
-    // ... handle other error codes as needed
-    default:
-        errorMessage = 'There was an error submitting your data. Please try again.';
-}
+        if (error.code === SOME_SPECIFIC_ERROR_CODE) {
+            errorMessage = 'Specific error message for this error code.';
+        }
+        // Add more conditions as needed
+
         alert(errorMessage);
         document.getElementById('spinner').style.display = 'none'; // Hide spinner
     });
