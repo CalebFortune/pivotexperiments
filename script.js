@@ -169,23 +169,36 @@ function submitData() {
     const totalIdeasNeeded = calculateTotalIdeasNeeded();
     const ideasToGenerate = totalIdeasNeeded - userData.ideas.length;
 
-    
-    userInput.save().then(async (response) => {
-        console.log('Data saved successfully:', response);
-        document.getElementById('submissionMessage').style.display = 'block';
-      
-        // Generate content ideas based on user input
-        const generatedTitles = await Parse.Cloud.run('generateTitles', { userInputId: response.id, totalIdeas: totalIdeasNeeded });
-        const prioritizedTitles = await Parse.Cloud.run('prioritizeAndCategorize', { titles: generatedTitles, userInputId: response.id });
-        const contentIdeas = await Parse.Cloud.run('generateContentCalendar', { titles: prioritizedTitles, userInputId: response.id });
+    // Generate content ideas based on user input
+    Parse.Cloud.run('generateTitles', {
+        topicClusters: userData.topicClusters,
+        directTitles: userData.ideas,
+        ideasToGenerate: ideasToGenerate
+    }).then(async (generatedTitles) => {
+        const prioritizedTitles = await Parse.Cloud.run('prioritizeAndCategorize', { titles: generatedTitles });
+        const contentIdeas = await Parse.Cloud.run('generateContentCalendar', { titles: prioritizedTitles });
 
         // Organize the content ideas
         organizeContentIdeas(contentIdeas);
 
+        // Save the final user input data
+        return userInput.save();
+
+    }).then((response) => {
+        console.log('Final data saved successfully:', response);
+        document.getElementById('submissionMessage').style.display = 'block';
         document.getElementById('spinner').style.display = 'none'; // Hide spinner
+
     }).catch((error) => {
-        console.error('Error while saving data:', error);
-        alert('There was an error submitting your data. Please try again.');
+        console.error('Error:', error);
+        
+        let errorMessage = 'There was an error submitting your data. Please try again.';
+        if (error.code === SOME_SPECIFIC_ERROR_CODE) {
+            errorMessage = 'Specific error message for this error code.';
+        }
+        // Add more conditions as needed
+
+        alert(errorMessage);
         document.getElementById('spinner').style.display = 'none'; // Hide spinner
     });
 }
