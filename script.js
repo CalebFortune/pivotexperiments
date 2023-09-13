@@ -1,4 +1,4 @@
-Parse.initialize("yCVQ6n5s2B2UlAjGznIJy48ZGVqDqWvPkLDafztR", "onVLFcQX8q20jhSVlinFQS9194m5G3G5tc6Waxfi");
+Parse.initialize("{{PARSE_APP_ID}}", "{{PARSE_API_KEY}}");
 Parse.serverURL = 'https://parseapi.back4app.com/';
 
 // 1. Initialization and Global Variables
