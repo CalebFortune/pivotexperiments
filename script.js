@@ -688,6 +688,7 @@ document.getElementById('contentForm').addEventListener('submit', function(event
         }
     }
 });
+document.getElementById('finalSubmitButton').addEventListener('click', submitData);
 document.getElementById('ideaInputNextButton').addEventListener('click', function(event) {
     event.preventDefault();
     
