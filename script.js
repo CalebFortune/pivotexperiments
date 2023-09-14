@@ -584,7 +584,15 @@ function initializeCalendar() {
     calendar.render();
   }
 }
-
+async function getIndustryKeywords() {
+    try {
+        const response = await Parse.Cloud.run('getIndustryKeywords', { industryName: Industry });
+        return response;
+    } catch (error) {
+        console.error("Error fetching industry keywords:", error);
+        return [];
+    }
+}
 // Attach event listeners
 document.getElementById('contentForm').addEventListener('submit', async function(event) {
     event.preventDefault();
