@@ -437,7 +437,7 @@ function calculateTotalIdeasNeeded() {
 
 async function organizeContentIdeas(ideas) {
     // Fetch industry keywords based on the user's selected industry
-    const industryKeywords = await getIndustryKeywords(userData.industry);
+    const industryKeywords = await fetchIndustryKeywordsFromServer(userData.industry);
     if (!Array.isArray(industryKeywords)) {
         console.error("Industry keywords are not defined or not an array.");
         return ideas; // Return the original ideas without sorting
@@ -664,7 +664,7 @@ function initializeCalendar() {
     calendar.render();
   }
 }
-async function getIndustryKeywords() {
+async function fetchIndustryKeywordsFromServer() {
     try {
         const response = await Parse.Cloud.run('getIndustryKeywords', { industryName: userData.industry });
         return response;
