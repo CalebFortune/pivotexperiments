@@ -674,10 +674,28 @@ async function fetchIndustryKeywordsFromServer() {
     }
 }
 // Attach event listeners
-document.getElementById('contentForm').addEventListener('submit', async function(event) {
+document.getElementById('contentForm').addEventListener('submit', function(event) {
     event.preventDefault();
-    submitData();
-    event.target.removeEventListener(event.type, arguments.callee); // Remove the event listener after submission
+    
+    const currentPage = document.querySelector('.page[style*="block"]');
+    if (currentPage) {
+        const nextPageButton = currentPage.querySelector('.next-button'); // Assuming you have a class "next-button" for the next buttons
+        if (nextPageButton) {
+            nextPageButton.click();
+        }
+    }
+});
+document.getElementById('ideaInputNextButton').addEventListener('click', function(event) {
+    event.preventDefault();
+    
+    // Save the idea if there's any input
+    const ideaType = document.getElementById('ideaType').value;
+    if (ideaType) {
+        saveIdea();
+    }
+    
+    // Navigate to the Summary Page
+    navigateToPage('summaryPage', event);
 });
 
 document.getElementById('ideaType').addEventListener('change', toggleIdeaTypeFields);
