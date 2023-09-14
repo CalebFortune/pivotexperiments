@@ -165,24 +165,28 @@ async function submitData() {
         userInput.set(key, userData[key]);
     }
 
+    // Separate Direct Titles and Topic Clusters
+    const directTitles = userData.ideas.filter(idea => idea.type === 'directTitle').map(idea => idea.title);
+    const topicClusters = userData.ideas.filter(idea => idea.type === 'topicCluster').map(idea => idea.topic);
+
     // Calculate the total number of ideas needed
     const totalIdeasNeeded = calculateTotalIdeasNeeded();
     const ideasToGenerate = totalIdeasNeeded - userData.ideas.length;
 
     Parse.Cloud.run('generateTitles', {
-    topicClusters: userData.topicClusters,
-    directTitles: userData.ideas,
-    ideasToGenerate: ideasToGenerate,
-    projectTypes: userData.projectTypes,
-    personas: userData.personas,
-}).then(async (generatedTitles) => {
+        topicClusters: topicClusters,
+        directTitles: directTitles,
+        ideasToGenerate: ideasToGenerate,
+        projectTypes: userData.projectTypes,
+        personas: userData.personas,
+    }).then(async (generatedTitles) => {
 
-    const contentIdeas = await organizeContentIdeas(generatedTitles); // Organize the ideas
-    const datedIdeas = assignDatesToIdeas(contentIdeas); // Assign dates to the ideas
-    addEventsToCalendar(datedIdeas); // Add the ideas to the calendar
+        const contentIdeas = await organizeContentIdeas(generatedTitles); // Organize the ideas
+        const datedIdeas = assignDatesToIdeas(contentIdeas); // Assign dates to the ideas
+        addEventsToCalendar(datedIdeas); // Add the ideas to the calendar
 
-    // Save the final user input data
-    return userInput.save();
+        // Save the final user input data
+        return userInput.save();
         
     }).then((response) => {
         console.log('Final data saved successfully:', response);
