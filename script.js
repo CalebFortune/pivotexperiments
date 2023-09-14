@@ -682,15 +682,17 @@ document.getElementById('contentForm').addEventListener('submit', function(event
     
     const currentPage = document.querySelector('.page[style*="block"]');
     if (currentPage) {
-        const nextPageButton = currentPage.querySelector('.next-button'); // Assuming you have a class "next-button" for the next buttons
-        if (nextPageButton) {
-            nextPageButton.click();
+        if (currentPage.id === 'summaryPage') {
+            // If the user is on the Summary page, submit the data
+            submitData();
+        } else {
+            // Otherwise, click the 'Next' button to navigate to the next page
+            const nextPageButton = currentPage.querySelector('.next-button'); // Assuming you have a class "next-button" for the next buttons
+            if (nextPageButton) {
+                nextPageButton.click();
+            }
         }
     }
-});
-document.getElementById('finalSubmitButton').addEventListener('click', function(event) {
-    event.preventDefault();
-    submitData();
 });
 document.getElementById('ideaInputNextButton').addEventListener('click', function(event) {
     event.preventDefault();
