@@ -666,7 +666,7 @@ function initializeCalendar() {
 }
 async function getIndustryKeywords() {
     try {
-        const response = await Parse.Cloud.run('getIndustryKeywords', { industryName: userData.ndustry });
+        const response = await Parse.Cloud.run('getIndustryKeywords', { industryName: userData.industry });
         return response;
     } catch (error) {
         console.error("Error fetching industry keywords:", error);
