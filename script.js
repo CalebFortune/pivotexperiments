@@ -172,8 +172,11 @@ async function submitData() {
     Parse.Cloud.run('generateTitles', {
     topicClusters: userData.topicClusters,
     directTitles: userData.ideas,
-    ideasToGenerate: ideasToGenerate
+    ideasToGenerate: ideasToGenerate,
+    projectTypes: userData.projectTypes,
+    personas: userData.personas,
 }).then(async (generatedTitles) => {
+
     const contentIdeas = await organizeContentIdeas(generatedTitles); // Organize the ideas
     const datedIdeas = assignDatesToIdeas(contentIdeas); // Assign dates to the ideas
     addEventsToCalendar(datedIdeas); // Add the ideas to the calendar
