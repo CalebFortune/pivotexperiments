@@ -5,7 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Content Calendar</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://unpkg.com/parse/dist/parse.min.js"></script>
+    <!-- <script src="https://unpkg.com/parse/dist/parse.min.js"></script> the previous script call -->
+    <script src="node_modules/parse/dist/parse.min.js"></script>
+
+<script>
+Parse.serverURL = 'https://parseapi.back4app.com'; // This is your Server URL
+// Remember to inform BOTH the Back4App Application ID AND the JavaScript KEY
+Parse.initialize(
+  'yCVQ6n5s2B2UlAjGznIJy48ZGVqDqWvPkLDafztR', // This is your Application ID
+  'onVLFcQX8q20jhSVlinFQS9194m5G3G5tc6Waxfi' // This is your Javascript key
+);
+</script>
     <!-- FullCalendar Script -->
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
     
