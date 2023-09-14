@@ -188,12 +188,130 @@ async function submitData() {
 
     }).catch((error) => {
         console.error('Error:', error);
-        
-        let errorMessage = 'There was an error submitting your data. Please try again.';
-        if (error.code === SOME_SPECIFIC_ERROR_CODE) {
-            errorMessage = 'Specific error message for this error code.';
-        }
-        // Add more conditions as needed
+        switch (error.code) {
+    case 100:
+        errorMessage = 'Connection failed (e.g., the server is unreachable).';
+        break;
+    case 101:
+        errorMessage = 'Object not found.';
+        break;
+    case 102:
+        errorMessage = 'Invalid query.';
+        break;
+    case 103:
+        errorMessage = 'Invalid class name.';
+        break;
+    case 104:
+        errorMessage = 'Missing object ID.';
+        break;
+    case 105:
+        errorMessage = 'Invalid key name.';
+        break;
+    case 106:
+        errorMessage = 'Invalid pointer.';
+        break;
+    case 107:
+        errorMessage = 'Invalid JSON.';
+        break;
+    case 108:
+        errorMessage = 'Command unavailable.';
+        break;
+    case 109:
+        errorMessage = 'Not initialized.';
+        break;
+    case 111:
+        errorMessage = 'Incorrect type.';
+        break;
+    case 112:
+        errorMessage = 'Invalid channel name.';
+        break;
+    case 114:
+        errorMessage = 'Invalid device token.';
+        break;
+    case 115:
+        errorMessage = 'Push misconfigured.';
+        break;
+    case 116:
+        errorMessage = 'Object too large.';
+        break;
+    case 119:
+        errorMessage = 'Operation forbidden.';
+        break;
+    case 120:
+        errorMessage = 'Cache miss.';
+        break;
+    case 124:
+        errorMessage = 'Request timeout.';
+        break;
+    case 125:
+        errorMessage = 'Invalid email address.';
+        break;
+    case 137:
+        errorMessage = 'Duplicate value.';
+        break;
+    case 139:
+        errorMessage = 'Invalid role name.';
+        break;
+    case 140:
+        errorMessage = 'Exceeded quota.';
+        break;
+    case 141:
+        errorMessage = 'Cloud code error.';
+        break;
+    case 142:
+        errorMessage = 'Cloud code validation failure.';
+        break;
+    case 153:
+        errorMessage = 'File save error.';
+        break;
+    case 155:
+        errorMessage = 'Request limit exceeded.';
+        break;
+    case 160:
+        errorMessage = 'Invalid push time.';
+        break;
+    case 200:
+        errorMessage = 'Username missing.';
+        break;
+    case 201:
+        errorMessage = 'Password missing.';
+        break;
+    case 202:
+        errorMessage = 'Username taken.';
+        break;
+    case 203:
+        errorMessage = 'Email taken.';
+        break;
+    case 204:
+        errorMessage = 'Email missing.';
+        break;
+    case 205:
+        errorMessage = 'Email not found.';
+        break;
+    case 206:
+        errorMessage = 'Session token missing.';
+        break;
+    case 207:
+        errorMessage = 'Must create user through signup.';
+        break;
+    case 208:
+        errorMessage = 'Account already linked.';
+        break;
+    case 209:
+        errorMessage = 'Invalid session token.';
+        break;
+    case 250:
+        errorMessage = 'Linked ID missing.';
+        break;
+    case 251:
+        errorMessage = 'Invalid linked session.';
+        break;
+    case 252:
+        errorMessage = 'Unsupported service.';
+        break;
+    default:
+        errorMessage = 'There was an error submitting your data. Please try again.';
+}
 
         alert(errorMessage);
         document.getElementById('spinner').style.display = 'none'; // Hide spinner
@@ -317,78 +435,40 @@ function calculateTotalIdeasNeeded() {
     return totalPeriods * userData.frequency;
 }
 
-async function generateContentIdeaWithOpenAI() {
-    const response = await fetch('https://parseapi.back4app.com/functions/generateContentIdeas', {
-        method: 'POST',
-        headers: {
-            'X-Parse-Application-Id': 'yCVQ6n5s2B2UlAjGznIJy48ZGVqDqWvPkLDafztR', // Replace with your App ID
-            'X-Parse-REST-API-Key': 'UKY7AffhQFkREuy3XBarGcTAash2vMpmuuLy1cgC', // Replace with your REST API Key
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            userData: userData
-        })
-    });
-
-    const result = await response.json();
-    return result.result;
-}
-
-async function fetchOpenAI(prompt) {
-    try {
-        const response = await Parse.Cloud.run('generateContentWithOpenAI', { prompt: prompt });
-        return response;
-    } catch (error) {
-        console.error("Error fetching from OpenAI:", error);
-        return null;
-    }
-}
-
-    // If no Topic Clusters but there are Direct Titles, use them to generate complementary content ideas
-    // ... (similar logic as above)
-
-
 async function organizeContentIdeas(ideas) {
     // Fetch industry keywords based on the user's selected industry
     const industryKeywords = await getIndustryKeywords(userData.industry);
+    if (!Array.isArray(industryKeywords)) {
+        console.error("Industry keywords are not defined or not an array.");
+        return ideas; // Return the original ideas without sorting
+    }
 
-    // Sort based on SEO
-    ideas.sort((a, b) => {
-        const aContainsKeyword = industryKeywords.some(keyword => a.title.includes(keyword));
-        const bContainsKeyword = industryKeywords.some(keyword => b.title.includes(keyword));
-        if (aContainsKeyword && !bContainsKeyword) return -1;
-        if (!aContainsKeyword && bContainsKeyword) return 1;
-        return 0;
+    // Score each idea
+    ideas.forEach(idea => {
+        idea.score = getIdeaScore(idea, industryKeywords);
     });
 
-    // Sort based on Project Type and Persona
-    ideas.sort((a, b) => {
-        const aPriority = getIdeaPriority(a);
-        const bPriority = getIdeaPriority(b);
-        return aPriority - bPriority;
-    });
+    // Sort ideas based on their scores
+    ideas.sort((a, b) => b.score - a.score); // Sort in descending order of scores
 
     return ideas;
 }
 
-function getIdeaPriority(idea) {
-    const projectTypePriority = userData.projectTypes.indexOf(idea.projectType);
-    const personaPriority = userData.personas.indexOf(idea.persona);
+function getIdeaScore(idea, industryKeywords) {
+    let score = 0;
 
-    // Calculate a combined priority score. This can be adjusted based on how you want to weigh each factor.
-    return projectTypePriority * 10 + personaPriority;
-}
-
-async function getIndustryKeywords(industry) {
-    try {
-        const response = await Parse.Cloud.run('getIndustryKeywords', { industryName: industry });
-        return response;
-    } catch (error) {
-        console.error("Error fetching industry keywords:", error);
-        return [];
+    // SEO relevance
+    if (idea.title && industryKeywords.some(keyword => idea.title.includes(keyword))) {
+        score += 1000; // A large score for SEO relevance
     }
-}
 
+    // Persona and Project Type combinations
+    const personaIndex = userData.personas.indexOf(idea.persona);
+    const projectTypeIndex = userData.projectTypes.indexOf(idea.projectType);
+    score += (3 - personaIndex) * 10 + (3 - projectTypeIndex); // This scoring gives priority to earlier personas and project types
+
+    return score;
+}
 
 // Call initialization functions or any other setup tasks here
 populateIndustries();
@@ -586,7 +666,7 @@ function initializeCalendar() {
 }
 async function getIndustryKeywords() {
     try {
-        const response = await Parse.Cloud.run('getIndustryKeywords', { industryName: Industry });
+        const response = await Parse.Cloud.run('getIndustryKeywords', { industryName: userData.ndustry });
         return response;
     } catch (error) {
         console.error("Error fetching industry keywords:", error);
