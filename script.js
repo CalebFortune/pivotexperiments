@@ -169,20 +169,18 @@ async function submitData() {
     const totalIdeasNeeded = calculateTotalIdeasNeeded();
     const ideasToGenerate = totalIdeasNeeded - userData.ideas.length;
 
-    // Generate content ideas based on user input
     Parse.Cloud.run('generateTitles', {
-        topicClusters: userData.topicClusters,
-        directTitles: userData.ideas,
-        ideasToGenerate: ideasToGenerate
-    }).then(async (generatedTitles) => {
-        const contentIdeas = await Parse.Cloud.run('generateContentCalendar', { titles: generatedTitles });
+    topicClusters: userData.topicClusters,
+    directTitles: userData.ideas,
+    ideasToGenerate: ideasToGenerate
+}).then(async (generatedTitles) => {
+    const contentIdeas = await organizeContentIdeas(generatedTitles); // Organize the ideas
+    const datedIdeas = assignDatesToIdeas(contentIdeas); // Assign dates to the ideas
+    addEventsToCalendar(datedIdeas); // Add the ideas to the calendar
 
-        // Organize the content ideas
-        const organizedIdeas = await organizeContentIdeas(contentIdeas);
-
-        // Save the final user input data
-        return userInput.save();
-
+    // Save the final user input data
+    return userInput.save();
+        
     }).then((response) => {
         console.log('Final data saved successfully:', response);
         document.getElementById('submissionMessage').style.display = 'block';
@@ -390,6 +388,7 @@ async function getIndustryKeywords(industry) {
         return [];
     }
 }
+
 
 // Call initialization functions or any other setup tasks here
 populateIndustries();
