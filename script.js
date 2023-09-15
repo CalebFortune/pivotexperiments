@@ -483,6 +483,24 @@ populateIndustries();
 // Global calendar variable
 var calendar;
 
+function initializeCalendar() {
+  var calendarEl = document.getElementById('calendar');
+  if (!calendar) { // Check if calendar is already initialized
+    calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth',
+      validRange: {
+          start: '2023-09-01',
+          end: '2023-09-30'
+      },
+      weekends: true,
+      events: [], // We'll populate this with our content ideas later
+      eventClick: function(info) {
+          alert(info.event.title + '\n' + info.event.extendedProps.description); // Show more details on click
+      }
+    });
+    calendar.render();
+  }
+}
 function toggleView(viewType) {
     if (viewType === 'calendar') {
         calendar.changeView('dayGridMonth');
@@ -540,9 +558,7 @@ function addEventsToCalendar(ideas) {
   }));
   calendar.addEventSource(events);
 }
-function initializeCalendar() {
-  calendar.render();
-}
+
 function assignDatesToIdeas(ideas) {
     let currentDate = new Date();
     const organizedIdeasWithDates = [];
@@ -653,24 +669,6 @@ document.getElementById('exportToCalendarButton').addEventListener('click', func
     document.getElementById('exportOptionsModal').style.display = 'block';
 });
 
-function initializeCalendar() {
-  var calendarEl = document.getElementById('calendar');
-  if (!calendar) { // Check if calendar is already initialized
-    calendar = new FullCalendar.Calendar(calendarEl, {
-      initialView: 'dayGridMonth',
-      validRange: {
-          start: '2023-09-01',
-          end: '2023-09-30'
-      },
-      weekends: true,
-      events: [], // We'll populate this with our content ideas later
-      eventClick: function(info) {
-          alert(info.event.title + '\n' + info.event.extendedProps.description); // Show more details on click
-      }
-    });
-    calendar.render();
-  }
-}
 async function fetchIndustryKeywordsFromServer() {
     try {
         const response = await Parse.Cloud.run('getIndustryKeywords', { industryName: userData.industry });
