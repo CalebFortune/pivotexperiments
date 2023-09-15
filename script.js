@@ -36,6 +36,7 @@ function navigateToPage(pageId, event) {
     document.getElementById('exportToCalendarButton').style.display = 'block';
     document.getElementById('calendar').style.display = 'block'; // Ensure the calendar is visible
     initializeCalendar();
+    }
 }
 
 // 3. Dynamic Field Population
@@ -332,10 +333,9 @@ async function submitData() {
 }
 
         alert(errorMessage);
-        document.getElementById('spinner').style.display = 'none'; // Hide spinner
+        document.getElementById('spinner').style.display = 'none';
     });
 }
-
 // 6. Additional Utility Functions
 function toggleIdeaTypeFields() {
     const ideaType = document.getElementById('ideaType').value;
