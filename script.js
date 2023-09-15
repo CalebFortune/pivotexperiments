@@ -484,9 +484,9 @@ populateIndustries();
 var calendar;
 
 function initializeCalendar() {
-  var calendarEl = document.getElementById('calendar');
-  if (!calendar) { // Check if calendar is already initialized
-    calendar = new FullCalendar.Calendar(calendarEl, {
+    var calendarEl = document.getElementById('calendar');
+    if (calendarEl && !calendar) { // Check if calendar element exists and if calendar is already initialized
+        calendar = new FullCalendar.Calendar(calendarEl, {
       initialView: 'dayGridMonth',
       validRange: {
           start: '2023-09-01',
@@ -551,14 +551,16 @@ function displayIdeasInTaskView(ideas) {
 }
 
 function addEventsToCalendar(ideas) {
-  const events = ideas.map(ideaObj => ({
-    title: ideaObj.idea,
-    start: ideaObj.date.toISOString().split('T')[0], // Convert the Date object to a 'YYYY-MM-DD' format
-    description: `${ideaObj.projectType}, ${ideaObj.persona}`
-  }));
-  calendar.addEventSource(events);
+    if (!calendar) {
+        initializeCalendar();
+    }
+    const events = ideas.map(ideaObj => ({
+        title: ideaObj.idea,
+        start: ideaObj.date.toISOString().split('T')[0], // Convert the Date object to a 'YYYY-MM-DD' format
+        description: `${ideaObj.projectType}, ${ideaObj.persona}`
+    }));
+    calendar.addEventSource(events);
 }
-
 function assignDatesToIdeas(ideas) {
     let currentDate = new Date();
     const organizedIdeasWithDates = [];
