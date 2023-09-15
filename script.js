@@ -476,7 +476,7 @@ function getIdeaScore(idea, industryKeywords) {
     let score = 0;
 
     // SEO relevance
-    if (idea.title && industryKeywords.some(keyword => idea.title.includes(keyword))) {
+    if (idea.title && typeof idea.title === 'string' && industryKeywords.some(keyword => typeof keyword === 'string' && idea.title.includes(keyword))) {
         score += 1000; // A large score for SEO relevance
     }
 
