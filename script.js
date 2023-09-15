@@ -34,10 +34,8 @@ function navigateToPage(pageId, event) {
     }
     if (pageId === 'finalPage') {
     document.getElementById('exportToCalendarButton').style.display = 'block';
-    }
-    if (pageId === 'finalPage') {
-        initializeCalendar();
-    }
+    document.getElementById('calendar').style.display = 'block'; // Ensure the calendar is visible
+    initializeCalendar();
 }
 
 // 3. Dynamic Field Population
@@ -181,9 +179,19 @@ async function submitData() {
         personas: userData.personas,
     }).then(async (generatedTitles) => {
 
-        const contentIdeas = await organizeContentIdeas(generatedTitles); // Organize the ideas
-        const datedIdeas = assignDatesToIdeas(contentIdeas); // Assign dates to the ideas
+        // Merge the initial directTitles with the generatedTitles
+        const allDirectTitles = directTitles.concat(generatedTitles.map(title => ({
+            title: title,
+            projectType: title.projectType,  // Assuming generatedTitles have projectType and persona properties
+            persona: title.persona
+        })));
+
+        const contentIdeas = await organizeContentIdeas(allDirectTitles); // Organize the merged ideas
+        const datedIdeas = assignDatesToIdeas(contentIdeas); // Assign dates to the organized ideas
         addEventsToCalendar(datedIdeas); // Add the ideas to the calendar
+
+        // Set the merged directTitles array to the 'ideas' column
+        userInput.set('ideas', allDirectTitles);
 
         // Save the final user input data
         return userInput.save();
@@ -193,6 +201,9 @@ async function submitData() {
         document.getElementById('submissionMessage').style.display = 'block';
         document.getElementById('spinner').style.display = 'none'; // Hide spinner
 
+        navigateToPage('finalPage', event);
+
+        
     }).catch((error) => {
         console.error('Error:', error);
         switch (error.code) {
