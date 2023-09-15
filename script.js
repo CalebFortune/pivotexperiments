@@ -175,6 +175,7 @@ async function submitData() {
     Parse.Cloud.run('generateTitles', {
         topicClusters: topicClusters,
         directTitles: directTitles,
+        industry: userData.industry,
         ideasToGenerate: ideasToGenerate,
         projectTypes: userData.projectTypes,
         personas: userData.personas,
