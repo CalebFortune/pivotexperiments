@@ -181,16 +181,18 @@ async function submitData() {
         personas: userData.personas,
     }).then(async (generatedTitles) => {
 
-        // Merge the initial directTitles with the generatedTitles
-const allDirectTitles = directTitles.map(titleObj => ({
-    title: titleObj.title.title,  // Extracting the title from the nested title object
-    projectType: titleObj.projectType || "",  // If projectType doesn't exist, default to an empty string
-    persona: titleObj.persona || ""  // If persona doesn't exist, default to an empty string
-})).concat(generatedTitles.map(title => ({
-    title: title.title,
-    projectType: title.projectType,
-    persona: title.persona
-})));
+      
+    // Merge the initial directTitles with the generatedTitles
+    const allDirectTitles = directTitles.map(titleObj => ({
+        title: titleObj.title && titleObj.title.title ? titleObj.title.title : "",  // Check if titleObj.title and titleObj.title.title exist
+        projectType: titleObj.projectType || "",  // If projectType doesn't exist, default to an empty string
+        persona: titleObj.persona || ""  // If persona doesn't exist, default to an empty string
+    })).concat(generatedTitles.filter(title => title && title.title).map(title => ({  // Filter out any undefined titles or titles without a title property
+        title: title.title,
+        projectType: title.projectType,
+        persona: title.persona
+    })));
+
 
         const contentIdeas = await organizeContentIdeas(allDirectTitles); // Organize the merged ideas
         const datedIdeas = assignDatesToIdeas(contentIdeas); // Assign dates to the organized ideas
