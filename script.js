@@ -182,16 +182,25 @@ async function submitData() {
     }).then(async (generatedTitles) => {
 
       
-    // Merge the initial directTitles with the generatedTitles
-    const allDirectTitles = directTitles.map(titleObj => ({
+    // Map the directTitles to ensure they have the correct format
+    const formattedDirectTitles = directTitles.map(titleObj => ({
         title: titleObj.title && titleObj.title.title ? titleObj.title.title : "",  // Check if titleObj.title and titleObj.title.title exist
         projectType: titleObj.projectType || "",  // If projectType doesn't exist, default to an empty string
         persona: titleObj.persona || ""  // If persona doesn't exist, default to an empty string
-    })).concat(generatedTitles.filter(title => title && title.title).map(title => ({  // Filter out any undefined titles or titles without a title property
+    }));
+    
+    // Filter and map the generatedTitles to ensure they have the correct format
+    const formattedGeneratedTitles = generatedTitles.filter(title => 
+        title && typeof title === 'object' && title.title && title.projectType && title.persona
+    ).map(title => ({
         title: title.title,
         projectType: title.projectType,
         persona: title.persona
-    })));
+    }));
+    
+    // Merge the formattedDirectTitles with the formattedGeneratedTitles
+    const allDirectTitles = formattedDirectTitles.concat(formattedGeneratedTitles);
+
 
 
         const contentIdeas = await organizeContentIdeas(allDirectTitles); // Organize the merged ideas
