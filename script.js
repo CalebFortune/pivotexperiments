@@ -477,15 +477,18 @@ async function organizeContentIdeas(ideas) {
         return ideas; // Return the original ideas without sorting
     }
 
-    // Score each idea
-    ideas.forEach(idea => {
+    // Filter out empty ideas or ideas with empty properties
+    const validIdeas = ideas.filter(idea => idea.title && idea.projectType && idea.persona);
+
+    // Score each valid idea
+    validIdeas.forEach(idea => {
         idea.score = getIdeaScore(idea, industryKeywords);
     });
 
     // Sort ideas based on their scores
-    ideas.sort((a, b) => b.score - a.score); // Sort in descending order of scores
+    validIdeas.sort((a, b) => b.score - a.score); // Sort in descending order of scores
 
-    return ideas;
+    return validIdeas;
 }
 
 function getIdeaScore(idea, industryKeywords) {
