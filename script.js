@@ -499,7 +499,14 @@ function getIdeaScore(idea, industryKeywords) {
     // Persona and Project Type combinations
     const personaIndex = userData.personas.indexOf(idea.persona);
     const projectTypeIndex = userData.projectTypes.indexOf(idea.projectType);
-    score += (3 - personaIndex) * 10 + (3 - projectTypeIndex); // This scoring gives priority to earlier personas and project types
+    
+    if (personaIndex !== -1 && projectTypeIndex !== -1) {
+        score += (3 - personaIndex) * 10 + (3 - projectTypeIndex); // This scoring gives priority to earlier personas and project types
+    } else {
+        console.log("Missing persona or project type:", idea);
+    }
+
+    console.log("Idea Score:", idea.title, score); // Logging the score for each idea
 
     return score;
 }
