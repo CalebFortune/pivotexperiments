@@ -470,6 +470,8 @@ function calculateTotalIdeasNeeded() {
 }
 
 async function organizeContentIdeas(ideas) {
+    console.log("Ideas before processing:", JSON.stringify(ideas));
+
     // Fetch industry keywords based on the user's selected industry
     const industryKeywords = await fetchIndustryKeywordsFromServer(userData.industry);
     if (!Array.isArray(industryKeywords)) {
@@ -487,6 +489,8 @@ async function organizeContentIdeas(ideas) {
 
     // Sort ideas based on their scores
     validIdeas.sort((a, b) => b.score - a.score); // Sort in descending order of scores
+
+    console.log("Ideas after processing:", JSON.stringify(validIdeas));
 
     return validIdeas;
 }
