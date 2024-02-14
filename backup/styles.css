@@ -1,0 +1,103 @@
+/* Reset some default browser styles */
+body, h1, h2, h3, p, form {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.container {
+    width: 95%; /* Set width to 200px */
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    text-align: center; /* Center text elements */
+}
+
+h1 {
+    margin-bottom: 20px;
+    color: #2c3e50;
+}
+
+form {
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    gap: 20px;
+    align-items: center; /* Center form elements */
+}
+
+label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type="text"], 
+input[type="number"], 
+textarea, 
+select {
+    width: 100%; /* Take up full width of the container */
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+textarea {
+    resize: vertical;
+}
+
+button {
+    background-color: #FF9E17; /* Updated button color */
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #E58A07; /* Darkened version of #FF9E17 for hover */
+}
+
+#calendarOutput {
+    margin-top: 30px;
+}
+
+#directTitleFields, 
+#topicClusterField {
+    display: none;
+}
+
+.idea-count-display {
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #e74c3c;
+}
+#spinner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8); /* semi-transparent white */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* ensure it's on top of other content */
+}
+
+#spinner img {
+    width: 50px;
+    height: 50px;
+}
+#exportToCalendarButton {
+    display: none;
+}
